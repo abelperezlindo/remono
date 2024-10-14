@@ -1,0 +1,25 @@
+{
+  "name": "remono",
+  "version": "1.0.0",
+  "description": "Remote control for linux",
+  "main": "index.js",
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/abelperezlindo/remono.git"
+  },
+  "keywords": [
+    "remote",
+    "linux",
+    "desktop",
+    "controll"
+  ],
+  "author": "Abel Perez Lindo",
+  "license": "GPL-3.0-or-later",
+  "bugs": {
+    "url": "https://github.com/abelperezlindo/remono/issues"
+  },
+  "homepage": "https://github.com/abelperezlindo/remono#readme"
+}
