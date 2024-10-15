@@ -27,14 +27,29 @@ serverApp.use(express.static(path.join(__dirname, 'public')));
 
 // Ruta de ejemplo
 serverApp.get('/', (req, res) => {
+  // Server side app config.
+  if (!req.headers['server-jwt'] || req.headers['server-jwt'] !== 'abc') {
+    return res.status(401).json({ error: 'No autorizado' });
+  }
   const username = os.userInfo().username;
   res.render('index', { username });
 });
 
 // Register
 serverApp.get('/register', (req, res) => {
+  if (!req.headers['server-jwt'] || req.headers['server-jwt'] !== 'abc') {
+    return res.status(401).json({ error: 'No autorizado' });
+  }
   const username = os.userInfo().username;
   res.render('register', { username });
+});
+
+// Ruta para mostrar los encabezados de la solicitud
+serverApp.get('/headers', (req, res) => {
+  if (!req.headers['server-jwt'] || req.headers['server-jwt'] !== 'abc') {
+    return res.status(401).json({ error: 'No autorizado' });
+  }
+  res.json({'msg': 'OK'});
 });
 
 // Configura HTTPS
@@ -61,12 +76,15 @@ function createWindow() {
   // win.loadFile('index.html');
   // Carga la aplicación desde el servidor Express
   win.loadURL(`https://localhost:${PORT}/`);
+  // Abre las herramientas de desarrollo
+  win.webContents.openDevTools();
 }
 
 app.whenReady().then(() => {
   // Ignora los errores de certificados no válidos
   session.defaultSession.webRequest.onBeforeSendHeaders((details, callback) => {
     details.requestHeaders['User-Agent'] = 'Chrome';
+    details.requestHeaders['Server-jwt'] = 'abc';
     callback({ cancel: false, requestHeaders: details.requestHeaders });
   });
 
