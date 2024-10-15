@@ -8,6 +8,10 @@ const https = require('https');
 const selfsigned = require('selfsigned');
 const serverApp = express();
 const PORT = 3055;
+const QRCode = require('qrcode');
+const initializeApp = require('./initialize');
+var jwt = require('jsonwebtoken');
+
 
 // Genera un certificado SSL autofirmado
 const pems = selfsigned.generate(null, { days: 365 });
@@ -36,12 +40,26 @@ serverApp.get('/', (req, res) => {
 });
 
 // Register
-serverApp.get('/register', (req, res) => {
+serverApp.get('/register', async (req, res) => {
+
   if (!req.headers['server-jwt'] || req.headers['server-jwt'] !== 'abc') {
     return res.status(401).json({ error: 'No autorizado' });
   }
+
+  // sign up jwt exp in 20 minutes
+  var token = jwt.sign({
+    opt: 'new client',
+    exp: Math.floor(Date.now() / 1000) + (60 * 20),
+  }, 'replace_this_with_a_secret');
+
   const username = os.userInfo().username;
-  res.render('register', { username });
+  try {
+    const qrCodeDataURL = await QRCode.toDataURL('https://localhost:3055/register' + token);
+    res.render('register', { username, token, qrCodeDataURL });
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('Error generating QR code');
+  }
 });
 
 // Ruta para mostrar los encabezados de la solicitud
@@ -81,6 +99,7 @@ function createWindow() {
 }
 
 app.whenReady().then(() => {
+  const db = initializeApp();
   // Ignora los errores de certificados no válidos
   session.defaultSession.webRequest.onBeforeSendHeaders((details, callback) => {
     details.requestHeaders['User-Agent'] = 'Chrome';

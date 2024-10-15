@@ -29,9 +29,13 @@
   },
   "dependencies": {
     "express": "^4.21.1",
+    "generate-password": "^1.7.1",
     "install": "^0.13.0",
+    "jsonwebtoken": "^9.0.2",
     "liquidjs": "^10.17.0",
     "npm": "^10.9.0",
-    "selfsigned": "^2.4.1"
+    "qrcode": "^1.5.4",
+    "selfsigned": "^2.4.1",
+    "sqlite3": "^5.1.7"
   }
 }

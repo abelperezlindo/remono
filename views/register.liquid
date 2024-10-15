@@ -10,21 +10,13 @@
 <body>
   <div class="container">
     <h1>Register New Device</h1>
-    <form action="/register" method="post">
-      <div class="form-group">
-        <label for="deviceName">Device Name</label>
-        <input type="text" id="deviceName" name="deviceName" required>
-      </div>
-      <div class="form-group">
-        <label for="phoneNumber">Phone Number</label>
-        <input type="tel" id="phoneNumber" name="phoneNumber" required>
-      </div>
-      <div class="form-group">
-        <label for="verificationCode">Verification Code</label>
-        <input type="text" id="verificationCode" name="verificationCode" required>
-      </div>
-      <button type="submit">Register</button>
-    </form>
+    <div class="text">
+      <p>Escanea el código qr con la camara de tu dispositivo movil e ingresa pagina de confirmacion.</p>
+      <p>Como alternativa piedes ingresar manualmente a la pagina en tu dispositivo.</p>
+      <p>Recuerda que ambos dispositivos, tanto el cliente como el servidor deben estar en la misma red.</p>
+      <p>{{ token }}</p>
+    </div>
+    <img src="{{ qrCodeDataURL }}" alt="QR Code">
   </div>
 </body>
 </html>
