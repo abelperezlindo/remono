@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Confirmar Operación</title>
+</head>
+<body>
+  <h1>Confirmar Operación</h1>
+  <form action="/register/{{ jwt }}" method="post">
+    <label for="device-name">Nombre del Dispositivo:</label>
+    <input type="text" id="device-name" name="device_name" required>
+    <button type="submit">Confirmar</button>
+    <p>
+      {{ jwt }}
+    </p>
+  </form>
+</body>
+</html>

@@ -52,14 +52,57 @@ serverApp.get('/register', async (req, res) => {
     exp: Math.floor(Date.now() / 1000) + (60 * 20),
   }, 'replace_this_with_a_secret');
 
-  const username = os.userInfo().username;
   try {
-    const qrCodeDataURL = await QRCode.toDataURL('https://localhost:3055/register' + token);
-    res.render('register', { username, token, qrCodeDataURL });
+    let url = 'https://localhost:3055/register/' + token
+    const qrCodeDataURL = await QRCode.toDataURL(url);
+    res.render('register', { url, token, qrCodeDataURL });
   } catch (err) {
     console.error(err);
     res.status(500).send('Error generating QR code');
   }
+});
+
+serverApp.get('/register/:jwt', function(req, res) {
+  if (req.headers['server-jwt'] == 'abc') {
+    return res.status(300).json({ error: 'Solo desde un dispositivo cliente' });
+  }
+
+  jwt.verify(req.params.jwt, 'replace_this_with_a_secret', function(err, decoded) {
+    if (err) return res.status(401).json({ error: 'Token no válido' });
+    // Validate the token
+    console.log(decoded);
+    res.render('register-confirm', { payload: decoded.exp, jwt: req.params.jwt});
+  });
+});
+
+serverApp.post('/register/:jwt', function(req, res) {
+  const usersList = req.body;
+  if (req.headers['server-jwt'] == 'abc') {
+    return res.status(401).json({ error: 'Solo desde un dispositivo cliente' });
+  }
+  jwt.verify(req.params.jwt, 'replace_this_with_a_secret', function(err, decoded) {
+    if (err) return res.status(401).json({ error: 'Token no válido', err });
+    // Validate the token
+    // Save the user
+    // Redirect to the panel
+    res.redirect('/panel');
+  });
+});
+
+serverApp.get('/panel', function(req, res) {
+  if (req.headers['server-jwt'] == 'abc') {
+    return res.status(401).json({ error: 'Solo desde un dispositivo cliente' });
+  }
+/*
+  jwt.verify(req.params.jwt, 'replace_this_with_a_secret', function(err, decoded) {
+    if (err) {
+      return res.status(401).json({ error: 'Token no válido' });
+    }
+    // Validate the token
+    res.render('panel', { username, token });
+  }); */
+
+  res.render('panel', {  });
 });
 
 // Ruta para mostrar los encabezados de la solicitud
