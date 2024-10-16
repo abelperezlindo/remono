@@ -20,11 +20,19 @@
   <main>
     <section>
       <h2>Available Tools</h2>
-      <ul>
+
+      <div clas="container flex">
         {% for tool in tools %}
-          <li>{{ tool.name }} - {{ tool.description }}</li>
+          <div clas="card"></div>
+            <h2 class="card-title">{{ tool.0 }}</h2>
+            <div class="card-body">
+            </div>
+            {% for item in tool.1 %}
+              <>{{ item.1.name }} - {{ item.1.description }}</li>
+            {% endfor %}
+          </div>
         {% endfor %}
-      </ul>
+      </div>
     </section>
   </main>
   <footer>

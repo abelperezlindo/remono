@@ -10,6 +10,7 @@ const serverApp = express();
 const PORT = 3055;
 const QRCode = require('qrcode');
 const initializeApp = require('./initialize');
+const getTools = require('./configs');
 var jwt = require('jsonwebtoken');
 
 
@@ -93,16 +94,14 @@ serverApp.get('/panel', function(req, res) {
   if (req.headers['server-jwt'] == 'abc') {
     return res.status(401).json({ error: 'Solo desde un dispositivo cliente' });
   }
-/*
-  jwt.verify(req.params.jwt, 'replace_this_with_a_secret', function(err, decoded) {
-    if (err) {
-      return res.status(401).json({ error: 'Token no válido' });
-    }
-    // Validate the token
-    res.render('panel', { username, token });
-  }); */
+  const tools = getTools();
+  // Check if the user is logged in, see the cookie or the session. WIP
+  var acces_jwt = jwt.sign({
+    opt: 'new client',
+    exp: Math.floor(Date.now() / 1000) + (60 * 20),
+  }, 'replace_this_with_a_secret');
 
-  res.render('panel', {  });
+  res.render('panel', { tools });
 });
 
 // Ruta para mostrar los encabezados de la solicitud

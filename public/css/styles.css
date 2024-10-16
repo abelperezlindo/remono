@@ -33,3 +33,24 @@ a {
 a:hover {
   text-decoration: underline;
 }
+
+/* Panels */
+
+.card {
+  background-color: #fff;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+}
+.card-title {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+.card-description {
+  font-size: 14px;
+  color: #888;
+}
+.flex {
+  display: flex;
+  flex-wrap: wrap;
+}
