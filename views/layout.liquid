@@ -35,3 +35,22 @@
   </footer>
 </body>
 </html>
+
+
+<script>
+  const ws = new WebSocket('wss://localhost:3055');
+  console.log('Connecting to WebSocket server');
+  ws.onopen = () => {
+    console.log('Connected to WebSocket server');
+    // Envía un mensaje al servidor WebSocket
+    ws.send('Hello Server');
+  };
+
+  ws.onmessage = (event) => {
+    console.log(`Message from server: ${event.data}`);
+  };
+
+  ws.onclose = () => {
+    console.log('Disconnected from WebSocket server');
+  };
+</script>

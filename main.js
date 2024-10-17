@@ -12,7 +12,7 @@ const QRCode = require('qrcode');
 const initializeApp = require('./initialize');
 const getTools = require('./configs');
 var jwt = require('jsonwebtoken');
-
+const WebSocket = require('ws');
 
 // Genera un certificado SSL autofirmado
 const pems = selfsigned.generate(null, { days: 365 });
@@ -136,10 +136,25 @@ const options = {
 };
 
 // Inicia el servidor HTTPS
-https.createServer(options, serverApp).listen(PORT, () => {
+const server = https.createServer(options, serverApp).listen(PORT, () => {
   console.log(`Servidor web escuchando en https://localhost:${PORT}`);
 });
 
+// Configura el servidor WebSocket
+const wss = new WebSocket.Server({ server });
+wss.on('connection', (ws) => {
+  console.log('New client connected');
+
+  ws.on('message', (message) => {
+    console.log(`Received message: ${message}`);
+    // Envía una respuesta al cliente
+    ws.send('Message received');
+  });
+
+  ws.on('close', () => {
+    console.log('Client disconnected');
+  });
+});
 
 function createWindow() {
   const win = new BrowserWindow({
