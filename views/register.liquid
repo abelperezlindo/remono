@@ -1,13 +1,11 @@
-<!-- view/register.liquid -->
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Register New Device</title>
-  <link rel="stylesheet" type="text/css" href="/css/styles.css">
-</head>
-<body>
+<!-- views/register.liquid -->
+{% layout 'layout' %}
+
+{% block title %}Confirmar Operación{% endblock %}
+
+{% block title-header %}Confirmar Operación{% endblock %}
+
+{% block content %}
   <div class="container">
     <h1>Register New Device</h1>
     <div class="text">
@@ -19,5 +17,4 @@
     </div>
     <img src="{{ qrCodeDataURL }}" alt="QR Code">
   </div>
-</body>
-</html>
+{% endblock %}

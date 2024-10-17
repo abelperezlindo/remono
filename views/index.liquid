@@ -1,25 +1,16 @@
 <!-- views/index.liquid -->
-<!DOCTYPE html>
-<html>
-  <head>
-    <title>Mi Aplicación Electron con LiquidJS</title>
-    <link rel="stylesheet" type="text/css" href="/css/styles.css">
-  </head>
-  <body>
-    <h1>¡Hola, {{ username }}!</h1>
-    <div class="container">
-      <h2>Dispositivos Registrados</h2>
-      <!-- ul>
-        {% for device in devices %}
-          <li>{{ device.name }} - {{ device.phoneNumber }}</li>
-        {% endfor %}
-      </ul -->
-    </div>
-    <div class="container">
-      <a href="register">Registrar Nuevo Dispositivo</a>
-    </div>
-    <div class="container">
-      <a href="headers">Test headers</a>
-    </div>
-  </body>
-</html>
+
+{% layout 'layout' %}
+
+{% block title %}Bienvenido {{ username }}!{% endblock %}
+
+{% block title-header %}¡Bienvenido {{ username }}!{% endblock %}
+
+{% block content %}
+  <div>
+    <a href="register">Registrar Nuevo Dispositivo</a>
+    <a href="headers">Test headers</a>
+    <a href="about">About</a>
+  </div>
+
+{% endblock %}

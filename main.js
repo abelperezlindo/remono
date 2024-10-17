@@ -1,5 +1,5 @@
 // main.js
-const { app, BrowserWindow, session} = require('electron');
+const { app, BrowserWindow, session, Menu} = require('electron');
 const os = require('os');
 const { Liquid } = require('liquidjs'); // Requiere LiquidJS
 const express = require('express');
@@ -112,6 +112,23 @@ serverApp.get('/headers', (req, res) => {
   res.json({'msg': 'OK'});
 });
 
+// Ruta para mostrar los encabezados de la solicitud
+serverApp.get('/about', (req, res) => {
+  res.render('about');
+});
+// Ruta para mostrar los encabezados de la solicitud
+serverApp.get('/config', (req, res) => {
+  const tools = getTools();
+  // Check if the user is logged in, see the cookie or the session. WIP
+  var acces_jwt = jwt.sign({
+    opt: 'new client',
+    exp: Math.floor(Date.now() / 1000) + (60 * 20),
+  }, 'replace_this_with_a_secret');
+
+  res.render('config', { tools });
+});
+
+
 // Configura HTTPS
 const options = {
   key: pems.private,
@@ -139,6 +156,8 @@ function createWindow() {
   // Abre las herramientas de desarrollo
   win.webContents.openDevTools();
 }
+
+Menu.setApplicationMenu(null);
 
 app.whenReady().then(() => {
   const db = initializeApp();
