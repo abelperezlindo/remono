@@ -13,6 +13,7 @@ const initializeApp = require('./initialize');
 const getTools = require('./configs');
 var jwt = require('jsonwebtoken');
 const WebSocket = require('ws');
+const cookieParser = require('cookie-parser');
 
 // Genera un certificado SSL autofirmado
 const pems = selfsigned.generate(null, { days: 365 });
@@ -29,6 +30,9 @@ serverApp.set('views', path.join(__dirname, 'views')); // Carpeta de vistas
 
 // Configura Express para servir archivos estáticos
 serverApp.use(express.static(path.join(__dirname, 'public')));
+
+// Configura cookie-parser
+serverApp.use(cookieParser());
 
 // Ruta de ejemplo
 serverApp.get('/', (req, res) => {
@@ -101,6 +105,8 @@ serverApp.get('/panel', function(req, res) {
     exp: Math.floor(Date.now() / 1000) + (60 * 20),
   }, 'replace_this_with_a_secret');
 
+  // Set a cookie
+  res.cookie('access_jwt', acces_jwt, { httpOnly: true, secure: true });
   res.render('panel', { tools });
 });
 

@@ -28,6 +28,7 @@
     "electron": "^32.2.0"
   },
   "dependencies": {
+    "cookie-parser": "^1.4.7",
     "express": "^4.21.1",
     "generate-password": "^1.7.1",
     "install": "^0.13.0",
