@@ -2,7 +2,10 @@
 require('./server');
 const db = require('./initialize');
 const { app, BrowserWindow, session, Menu} = require('electron');
+const IP = require('./utils/ip');
 const PORT = 3055;
+const url = `https://${IP}:${PORT}/`;
+console.log(`Server running at ${url}`);
 
 function createWindow() {
   const win = new BrowserWindow({
@@ -15,7 +18,7 @@ function createWindow() {
 
   // win.loadFile('index.html');
   // Carga la aplicación desde el servidor Express
-  win.loadURL(`https://localhost:${PORT}/`);
+  win.loadURL(url);
   // Abre las herramientas de desarrollo
   win.webContents.openDevTools();
 }

@@ -6,12 +6,14 @@ const path = require('path');
 const https = require('https');
 const selfsigned = require('selfsigned');
 const serverApp = express();
-const PORT = 3055;
 const QRCode = require('qrcode');
 const getTools = require('./configs');
 var jwt = require('jsonwebtoken');
 const WebSocket = require('ws');
 const cookieParser = require('cookie-parser');
+const IP = require('./utils/ip');
+const PORT = 3055;
+const IP_URL = `https://${IP}:${PORT}/`;
 
 // Genera un certificado SSL autofirmado
 const pems = selfsigned.generate(null, { days: 365 });
@@ -56,7 +58,7 @@ serverApp.get('/register', async (req, res) => {
   }, 'replace_this_with_a_secret');
 
   try {
-    let url = 'https://localhost:3055/register/' + token
+    let url = `${IP_URL}register/${token}`;
     const qrCodeDataURL = await QRCode.toDataURL(url);
     res.render('register', { url, token, qrCodeDataURL });
   } catch (err) {
