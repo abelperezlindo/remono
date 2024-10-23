@@ -1,10 +1,8 @@
 // main.js
+require('./server');
+const db = require('./initialize');
 const { app, BrowserWindow, session, Menu} = require('electron');
-const serverApp = require('./server');
-
 const PORT = 3055;
-
-const initializeApp = require('./initialize');
 
 function createWindow() {
   const win = new BrowserWindow({
@@ -25,7 +23,7 @@ function createWindow() {
 Menu.setApplicationMenu(null);
 
 app.whenReady().then(() => {
-  const db = initializeApp();
+  //const db = initializeApp();
   // Ignora los errores de certificados no válidos
   session.defaultSession.webRequest.onBeforeSendHeaders((details, callback) => {
     details.requestHeaders['User-Agent'] = 'Chrome';

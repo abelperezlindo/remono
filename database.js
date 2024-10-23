@@ -1,23 +1,23 @@
+const e = require('express');
+
 // database.js
 const sqlite3 = require('sqlite3').verbose();
-
 class Database {
   constructor() {
-    if (Database.instance) {
-      return Database.instance;
+    if (!Database.instance) {
+      console.log('Creando una instancia de la base de datos');
+      this.db = new sqlite3.Database(':memory:'); // Usa una base de datos en memoria para desarrollo
+      Database.instance = this;
+    } else {
+      console.log('Usando una instancia de la base de datos');
     }
 
-    // Perform initialization tasks here...
-    this.connection = /* connect to database */;
-
-    Database.instance = this;
-  }
-
-  query(sql) {
-    return this.connection.query(sql);
+    return Database.instance;
   }
 }
 
-const db = new Database();
+ // Congelar la clase para prevenir modificaciones
+const instance = new Database();
+Object.freeze(instance);
 
-module.exports = Database;
+module.exports = instance.db;
