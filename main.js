@@ -7,6 +7,15 @@ const PORT = 3055;
 const url = `https://${IP}:${PORT}/`;
 console.log(`Server running at ${url}`);
 
+db.each('SELECT * FROM var WHERE key = ?;', ['SECRET'], (err, row) => {
+  if (err) {
+    console.log('Error dddd');
+    throw err;
+
+  }
+  console.log(`${row.key} ${row.value}`);
+});
+
 function createWindow() {
   const win = new BrowserWindow({
     width: 800,
