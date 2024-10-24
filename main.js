@@ -7,14 +7,14 @@ const PORT = 3055;
 const url = `https://${IP}:${PORT}/`;
 console.log(`Server running at ${url}`);
 
-console.log(`Set var holamundo`);
-db.setVar('holamundo', 'Hola Mundo');
 
 console.log(`Get var holamundo`);
-let holamundo =  db.getVar('holamundo');
-
-console.log(`holamundo: ${holamundo}`);
-
+db.getVar('holamundo').then((holamundo) => {
+  console.log(`holamundo: ${holamundo}`);
+});
+db.setVar('pepe', 'marta').then((result) => {
+  console.log(result);
+});
 
 function createWindow() {
   const win = new BrowserWindow({

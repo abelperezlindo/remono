@@ -2,9 +2,12 @@
 const sqlite3 = require('sqlite3').verbose();
 
 const db = require('./database');
-// Realiza operaciones de configuración aquí
-console.log('Realizando operaciones de configuración...');
 
-db.bootstrap();
+db.bootstrap().then((msg) => {
+  console.log('Database has been initialized');
+}).catch((err) => {
+  console.error('Error initializing database');
+  console.error(err);
+});
 
 module.exports = db;

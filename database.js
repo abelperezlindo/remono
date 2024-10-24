@@ -21,56 +21,64 @@ class Database {
   }
 
   bootstrap() {
-    this.db.serialize(() => {
-      // Crete some tables.
-      this.db.run("CREATE TABLE IF NOT EXISTS var (key VARCHAT(255), value TEXT)");
-      this.db.run("CREATE TABLE IF NOT EXISTS client (id INT, name TEXT, signup_at DATETIME DEFAULT CURRENT_TIMESTAMP)");
+    return new Promise((resolve, reject) => {
+      this.db.serialize(() => {
+        // Crete some tables.
+        this.db.run("CREATE TABLE IF NOT EXISTS var (key VARCHAT(255), value TEXT)");
+        this.db.run("CREATE TABLE IF NOT EXISTS client (id INT, name TEXT, signup_at DATETIME DEFAULT CURRENT_TIMESTAMP)");
 
-      this.db.all("SELECT key, value FROM var WHERE key = ?;", ['SECRET'], (err, rows) => {
-        if (err) {
-          console.log(`ERRRORRRRO `);
-          console.error(err.message);
-        }
+        this.db.all("SELECT key, value FROM var WHERE key = ?;", ['SECRET'], (err, rows) => {
+          if (err) { reject(err) }
 
-        console.log(`Row content: ${rows}`);
-
-        if (rows.length == 0) {
-          let password = generator.generate({
-            length: 20,
-            numbers: true
-          });
-          const stmt = this.db.prepare("INSERT INTO var VALUES ('SECRET', ?)");
-          stmt.run(password);
-          stmt.finalize();
-          console.log('New secret has generated');
-        }
+          if (rows.length == 0) {
+            let password = generator.generate({
+              length: 20,
+              numbers: true
+            });
+            const stmt = this.db.prepare("INSERT INTO var VALUES ('SECRET', ?)");
+            stmt.run(password);
+            stmt.finalize();
+            resolve('New secret has generated');
+          }
+        });
       });
-
     });
   }
 
   getVar(key) {
-    this.db.get('SELECT value FROM var WHERE key = ?;', [key], (err, row) => {
-      if (err) {
-        console.log('Error ' + err);
-        throw err;
-      }
-      return row.value;
+    return new Promise((resolve, reject) => {
+      this.db.get('SELECT value FROM var WHERE key = ?;', [key], (err, row) => {
+        if (err) {
+          console.log('Error ' + err);
+          reject(err);
+        }
+        if (!row) {
+          resolve(null);
+        } else {
+          resolve(row.value);
+        }
+      });
     });
   }
 
   setVar(key, value) {
-    let current = this.getVar(key);
-    if (current) {
-      const stmt = this.db.prepare("UPDATE var SET value = ? WHERE key = ?");
-      stmt.run(value, key);
-      stmt.finalize();
-    }
-    else {
-      const stmt = this.db.prepare("INSERT INTO var VALUES (?, ?)");
-      stmt.run(key, value);
-      stmt.finalize();
-    }
+    return new Promise((resolve, reject) => {
+      this.getVar(key).then((current) => {
+        if (current) {
+          const stmt = this.db.prepare("UPDATE var SET value = ? WHERE key = ?");
+          stmt.run(value, key);
+          stmt.finalize();
+          resolve('Value has been updated');
+        } else {
+          const stmt = this.db.prepare("INSERT INTO var VALUES (?, ?)");
+          stmt.run(key, value);
+          stmt.finalize();
+          resolve('Value has been inserted');
+        }
+      }).catch((err) => {
+        reject(err);
+      });
+    });
   }
 }
 
