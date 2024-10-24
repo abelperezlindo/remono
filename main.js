@@ -7,14 +7,14 @@ const PORT = 3055;
 const url = `https://${IP}:${PORT}/`;
 console.log(`Server running at ${url}`);
 
-db.each('SELECT * FROM var WHERE key = ?;', ['SECRET'], (err, row) => {
-  if (err) {
-    console.log('Error dddd');
-    throw err;
+console.log(`Set var holamundo`);
+db.setVar('holamundo', 'Hola Mundo');
 
-  }
-  console.log(`${row.key} ${row.value}`);
-});
+console.log(`Get var holamundo`);
+let holamundo =  db.getVar('holamundo');
+
+console.log(`holamundo: ${holamundo}`);
+
 
 function createWindow() {
   const win = new BrowserWindow({
