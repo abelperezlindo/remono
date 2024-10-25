@@ -114,6 +114,7 @@ li {
   border: 1px solid gray;
   border-radius: 15px;
   overflow: hidden;
+
 }
 .card:hover {
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);

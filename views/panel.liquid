@@ -13,7 +13,7 @@
     <h2 class="subtitle">{{ tool.0 }}</h2>
     <section class="flex">
       {% for item in tool.1 %}
-      <div class="card">
+      <div class="card" onclick="window.location.href='{{ item.1.toute }}'">
         <div class="card-header">
           <img src="{{ item.1.icon }}" alt="{{ item.1.name }}">
         </div>
