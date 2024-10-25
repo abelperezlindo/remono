@@ -101,11 +101,22 @@ li {
 }
 
 /* Panels */
-
+.subtitle {
+  font-size: 1.2em;
+  margin-bottom: 0.5em;
+  background-color: #eaeaea;
+}
 .card {
-  background-color: #fff;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  margin-bottom: 20px;
+  width: 12rem;
+  background-color: #f3f3f3;
+  border: 1px solid gray;
+  border-radius: 15px;
+}
+.card:hover {
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  scale: 1.05;
+  transition: all 0.3s;
 }
 .card-title {
   font-size: 18px;
@@ -118,5 +129,9 @@ li {
 }
 .flex {
   display: flex;
+  flex-direction: row;
   flex-wrap: wrap;
+  align-content: space-around;
+  align-items: stretch;
+  gap: 30px 50px;
 }

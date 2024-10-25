@@ -6,23 +6,22 @@
 {% block title-header %}Config{% endblock %}
 
 {% block content %}
-  <section>
-    <div clas="container-flex">
-      {% for tool in tools %}
+<section>
+  <div class="container">
+    {% for tool in tools %}
 
-          <h2 class="subtitle">{{ tool.0 }}</h2>
-          <div class="card-body">
-          </div>
-          {% for item in tool.1 %}
-            <div clas="card">
-              <h3 class="card-title">{{ item.1.name }}</h3>
-              <div class="card-body">
-                {{ item.1.description }}
-              </div>
-            </div>
-          {% endfor %}
+    <h2 class="subtitle">{{ tool.0 }}</h2>
+    <section class="flex">
+      {% for item in tool.1 %}
+      <div class="card">
+        <h3 class="card-title">{{ item.1.name }}</h3>
+        <div class="card-body">
+          {{ item.1.description }}
         </div>
+      </div>
       {% endfor %}
-    </div>
-  </section>
+    </section>
+    {% endfor %}
+  </div>
+</section>
 {% endblock %}

@@ -25,7 +25,7 @@ class Database {
       this.db.serialize(() => {
         // Crete some tables.
         this.db.run("CREATE TABLE IF NOT EXISTS var (key VARCHAT(255), value TEXT)");
-        this.db.run("CREATE TABLE IF NOT EXISTS client (id INT, name TEXT, signup_at DATETIME DEFAULT CURRENT_TIMESTAMP)");
+        this.db.run("CREATE TABLE IF NOT EXISTS device (id INTEGER PRIMARY KEY, name TEXT NOT NULL, signup_at DATETIME DEFAULT CURRENT_TIMESTAMP)");
 
         this.db.all("SELECT key, value FROM var WHERE key = ?;", ['SECRET'], (err, rows) => {
           if (err) { reject(err) }
