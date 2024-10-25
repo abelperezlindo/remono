@@ -25,7 +25,7 @@ class Database {
       this.db.serialize(() => {
         // Crete some tables.
         this.db.run("CREATE TABLE IF NOT EXISTS var (key VARCHAT(255), value TEXT)");
-        this.db.run("CREATE TABLE IF NOT EXISTS device (id INTEGER PRIMARY KEY, name TEXT NOT NULL, signup_at DATETIME DEFAULT CURRENT_TIMESTAMP)");
+        this.db.run("CREATE TABLE IF NOT EXISTS device (id INTEGER PRIMARY KEY, name VARCHAR(25) NOT NULL, token TEXT NOT NULL, signup_at DATETIME DEFAULT CURRENT_TIMESTAMP)");
 
         this.db.all("SELECT key, value FROM var WHERE key = ?;", ['SECRET'], (err, rows) => {
           if (err) { reject(err) }
@@ -83,8 +83,8 @@ class Database {
 
   setDevice(device) {
     return new Promise((resolve, reject) => {
-      const stmt = this.db.prepare("INSERT INTO device (name) VALUES (?)");
-      stmt.run(device.name);
+      const stmt = this.db.prepare("INSERT INTO device (name, token) VALUES (?, ?)");
+      stmt.run(device.name, device.initToken);
       stmt.finalize((err) => {
         if (err) {
           reject(err);
