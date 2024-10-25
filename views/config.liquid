@@ -14,8 +14,11 @@
     <section class="flex">
       {% for item in tool.1 %}
       <div class="card">
-        <h3 class="card-title">{{ item.1.name }}</h3>
+        <div class="card-header">
+          <img src="{{ item.1.icon }}" alt="{{ item.1.name }}">
+        </div>
         <div class="card-body">
+          <h3 class="card-title">{{ item.1.name }}</h3>
           {{ item.1.description }}
         </div>
       </div>

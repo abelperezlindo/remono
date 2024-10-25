@@ -105,6 +105,7 @@ li {
   font-size: 1.2em;
   margin-bottom: 0.5em;
   background-color: #eaeaea;
+  padding: 10px;
 }
 .card {
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -112,11 +113,26 @@ li {
   background-color: #f3f3f3;
   border: 1px solid gray;
   border-radius: 15px;
+  overflow: hidden;
 }
 .card:hover {
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   scale: 1.05;
   transition: all 0.3s;
+}
+.card-header {
+  padding: 10px;
+  text-align: center;
+  background-color: #969696;
+  color: #fff;
+  height: 5rem;
+  overflow: hidden;
+}
+.card-header img {
+  height: 100%;
+}
+.card-body {
+  padding: 10px;
 }
 .card-title {
   font-size: 18px;

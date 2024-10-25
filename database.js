@@ -80,6 +80,24 @@ class Database {
       });
     });
   }
+
+  setDevice(device) {
+    return new Promise((resolve, reject) => {
+      const stmt = this.db.prepare("INSERT INTO device (name) VALUES (?)");
+      stmt.run(device.name);
+      stmt.finalize((err) => {
+        if (err) {
+          reject(err);
+        }
+        else {
+          this.db.get('SELECT last_insert_rowid() as id', (err, row) => {
+            if (err) { reject(err); }
+            resolve(row.id);
+          });
+        }
+      });
+    });
+  }
 }
 
 // Congelar la clase para prevenir modificaciones

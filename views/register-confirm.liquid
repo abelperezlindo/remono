@@ -6,9 +6,9 @@
 {% block title-header %}Confirmar Operación{% endblock %}
 
 {% block content %}
-  <form action="/register/{{ jwt }}" method="post">
+  <form action="/register/{{ jwt }}/confirm" method="POST">
     <label for="device-name">Nombre del Dispositivo:</label>
-    <input type="text" id="device-name" name="device_name" required>
+    <input type="text" id="name" name="name" required>
     <button type="submit">Confirmar</button>
   </form>
 {% endblock %}

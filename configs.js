@@ -9,7 +9,7 @@ function getTools() {
         'name': 'Ping Pong',
         'description': 'Send a ping and get a pong',
         'route': '/tool/io/pingpong',
-        'icon': '/assets/pingpong.png',
+        'icon': '/img/ping-pong.svg',
         'config': {
           'timeout': 1000
         }
@@ -18,7 +18,7 @@ function getTools() {
         'name': 'Send Message',
         'description': 'Send a message to the server',
         'route': '/tool/io/sendmessage',
-        'icon': '/assets/sendmessage.png',
+        'icon': '/img/sendmessage.png',
         'config': {
           'timeout': 1000
         }
@@ -27,7 +27,7 @@ function getTools() {
         'name': 'Mouse & Keyboard',
         'description': 'Control the mouse and keyboard',
         'route': '/tool/io/mouse-keyboard',
-        'icon': '/assets/mouse-keyboard.png',
+        'icon': '/img/mouse-keyboard.png',
         'config': {
           'timeout': 1000
         }
@@ -38,7 +38,7 @@ function getTools() {
         'name': 'Power Off',
         'description': 'Turn off the server',
         'url': '/tool/system/poweroff',
-        'icon': '/assets/poweroff.png',
+        'icon': '/img/poweroff.png',
         'config': {
           'in': 1000
         }
@@ -47,7 +47,7 @@ function getTools() {
         'name': 'Suspend',
         'description': 'Suspend the server',
         'url': '/tool/system/suspend',
-        'icon': '/assets/suspend.png',
+        'icon': '/img/suspend.png',
         'config': {
           'in': 1000
         }
@@ -58,7 +58,7 @@ function getTools() {
         'name': 'Screenshot',
         'description': 'Take a screenshot',
         'url': '/tool/screen/screenshot',
-        'icon': '/assets/screenshot.png',
+        'icon': '/img/screenshot.png',
         'config': {
           'in': 1000
         }
@@ -67,7 +67,7 @@ function getTools() {
         'name': 'Record',
         'description': 'Record the screen',
         'url': '/tool/screen/record',
-        'icon': '/assets/record.png',
+        'icon': '/img/record.png',
         'config': {
           'in': 1000
         }

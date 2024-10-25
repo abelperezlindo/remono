@@ -12,6 +12,7 @@ var jwt = require('jsonwebtoken');
 const WebSocket = require('ws');
 const cookieParser = require('cookie-parser');
 const IP = require('./utils/ip');
+const db = require('./database');
 const PORT = 3055;
 const IP_URL = `https://${IP}:${PORT}/`;
 
@@ -33,6 +34,10 @@ serverApp.use(express.static(path.join(__dirname, 'public')));
 
 // Configura cookie-parser
 serverApp.use(cookieParser());
+
+// Middleware para parsear JSON y datos de formularios URL-encoded
+serverApp.use(express.json());
+serverApp.use(express.urlencoded({ extended: true }));
 
 // Ruta de ejemplo
 serverApp.get('/', (req, res) => {
@@ -80,16 +85,24 @@ serverApp.get('/register/:jwt', function(req, res) {
   });
 });
 
-serverApp.post('/register/:jwt', function(req, res) {
-  const usersList = req.body;
+serverApp.post('/register/:jwt/confirm', function(req, res) {
+  console.log(req);
+  const name = req.body.name;
+  const initToken = req.params.jwt;
   if (req.headers['server-jwt'] == 'abc') {
     return res.status(401).json({ error: 'Solo desde un dispositivo cliente' });
   }
-  jwt.verify(req.params.jwt, 'replace_this_with_a_secret', function(err, decoded) {
+  jwt.verify(initToken, 'replace_this_with_a_secret', function(err, decoded) {
     if (err) return res.status(401).json({ error: 'Token no válido', err });
     // Validate the token
     // Save the user
     // Redirect to the panel
+    db.setDevice({name, initToken})
+      .then((result) => {
+        // Results is device id.
+      }).catch((err) => {
+        console.error(err);
+      });
     res.redirect('/panel');
   });
 });
