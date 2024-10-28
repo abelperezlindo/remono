@@ -15,6 +15,7 @@ const IP = require('./utils/ip');
 const db = require('./database');
 const PORT = 3055;
 const IP_URL = `https://${IP}:${PORT}/`;
+const lang = 'en';
 
 // Genera un certificado SSL autofirmado
 const pems = selfsigned.generate(null, { days: 365 });
@@ -38,6 +39,12 @@ serverApp.use(cookieParser());
 // Middleware para parsear JSON y datos de formularios URL-encoded
 serverApp.use(express.json());
 serverApp.use(express.urlencoded({ extended: true }));
+
+// Middleware for pasar variables globales a todas las plantillas
+serverApp.use((req, res, next) => {
+  res.locals.lang = lang;
+  next();
+});
 
 // Ruta de ejemplo
 serverApp.get('/', (req, res) => {
