@@ -49,7 +49,7 @@ serverApp.use((req, res, next) => {
 // Ruta de ejemplo
 serverApp.get('/', (req, res) => {
   // Server side app config.
-  if (!req.headers['server-jwt'] || req.headers['server-jwt'] !== 'abc') {
+  if (!req.headers['server-Token'] || req.headers['server-Token'] !== 'abc') {
     return res.status(401).json({ error: 'No autorizado' });
   }
   const username = os.userInfo().username;
@@ -59,7 +59,7 @@ serverApp.get('/', (req, res) => {
 // Register
 serverApp.get('/register', async (req, res) => {
 
-  if (!req.headers['server-jwt'] || req.headers['server-jwt'] !== 'abc') {
+  if (!req.headers['server-Token'] || req.headers['server-Token'] !== 'abc') {
     return res.status(401).json({ error: 'No autorizado' });
   }
 
@@ -80,7 +80,7 @@ serverApp.get('/register', async (req, res) => {
 });
 
 serverApp.get('/register/:jwt', function(req, res) {
-  if (req.headers['server-jwt'] == 'abc') {
+  if (req.headers['server-Token'] == 'abc') {
     return res.status(300).json({ error: 'Solo desde un dispositivo cliente' });
   }
 
@@ -96,7 +96,7 @@ serverApp.post('/register/:jwt/confirm', function(req, res) {
   console.log(req);
   const name = req.body.name;
   const initToken = req.params.jwt;
-  if (req.headers['server-jwt'] == 'abc') {
+  if (req.headers['server-Token'] == 'abc') {
     return res.status(401).json({ error: 'Solo desde un dispositivo cliente' });
   }
   jwt.verify(initToken, 'replace_this_with_a_secret', function(err, decoded) {
@@ -115,7 +115,7 @@ serverApp.post('/register/:jwt/confirm', function(req, res) {
 });
 
 serverApp.get('/panel', function(req, res) {
-  if (req.headers['server-jwt'] == 'abc') {
+  if (req.headers['server-Token'] == 'abc') {
     return res.status(401).json({ error: 'Solo desde un dispositivo cliente' });
   }
   const tools = getTools();
@@ -132,7 +132,7 @@ serverApp.get('/panel', function(req, res) {
 
 // Ruta para mostrar los encabezados de la solicitud
 serverApp.get('/headers', (req, res) => {
-  if (!req.headers['server-jwt'] || req.headers['server-jwt'] !== 'abc') {
+  if (!req.headers['server-Token'] || req.headers['server-Token'] !== 'abc') {
     return res.status(401).json({ error: 'No autorizado' });
   }
   res.json({'msg': 'OK'});

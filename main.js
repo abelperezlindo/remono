@@ -39,7 +39,7 @@ app.whenReady().then(() => {
   // Ignora los errores de certificados no válidos
   session.defaultSession.webRequest.onBeforeSendHeaders((details, callback) => {
     details.requestHeaders['User-Agent'] = 'Chrome';
-    details.requestHeaders['Server-jwt'] = 'abc';
+    details.requestHeaders['Server-Token'] = 'abc';
     callback({ cancel: false, requestHeaders: details.requestHeaders });
   });
 
