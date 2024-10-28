@@ -41,6 +41,11 @@ class Database {
             resolve('New secret has generated');
           }
         });
+
+        this.setVar('SERVER_TOKEN', generator.generate({length: 20, numbers: true })).then((msg) => {  // Set the server token
+          console.log(msg);
+        });
+
       });
     });
   }

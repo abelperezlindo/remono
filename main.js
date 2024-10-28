@@ -8,14 +8,6 @@ const url = `https://${IP}:${PORT}/`;
 console.log(`Server running at ${url}`);
 
 
-console.log(`Get var holamundo`);
-db.getVar('holamundo').then((holamundo) => {
-  console.log(`holamundo: ${holamundo}`);
-});
-db.setVar('pepe', 'marta').then((result) => {
-  console.log(result);
-});
-
 function createWindow() {
   const win = new BrowserWindow({
     width: 1000,
