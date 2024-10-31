@@ -18,7 +18,7 @@ function getTools() {
         'name': 'Send Message',
         'description': 'Send a message to the server',
         'route': '/tool/io/sendmessage',
-        'icon': '/img/sendmessage.png',
+        'icon': '/img/sendmessage.svg',
         'config': {
           'timeout': 1000
         }
@@ -27,7 +27,16 @@ function getTools() {
         'name': 'Mouse & Keyboard',
         'description': 'Control the mouse and keyboard',
         'route': '/tool/io/mouse-keyboard',
-        'icon': '/img/mouse-keyboard.png',
+        'icon': '/img/mouse-keyboard.svg',
+        'config': {
+          'timeout': 1000
+        }
+      },
+      'clipboard': {
+        'name': 'Server clipboard',
+        'description': 'Get content from the server clipboard',
+        'route': '/tool/io/getclipboard',
+        'icon': '/img/clipboard.svg',
         'config': {
           'timeout': 1000
         }
@@ -38,7 +47,7 @@ function getTools() {
         'name': 'Power Off',
         'description': 'Turn off the server',
         'url': '/tool/system/poweroff',
-        'icon': '/img/poweroff.png',
+        'icon': '/img/poweroff.svg',
         'config': {
           'in': 1000
         }
@@ -47,7 +56,27 @@ function getTools() {
         'name': 'Suspend',
         'description': 'Suspend the server',
         'url': '/tool/system/suspend',
-        'icon': '/img/suspend.png',
+        'icon': '/img/suspend.svg',
+        'config': {
+          'in': 1000
+        }
+      },
+      'reboot': {
+        'name': 'Reboot',
+        'description': 'Reboot the server',
+        'url': '/tool/system/reboot',
+        'icon': '/img/reboot.svg',
+        'config': {
+          'in': 1000
+        }
+      }
+    },
+    'media': {
+      'control': {
+        'name': 'Control Multi Media',
+        'description': 'Control Multi Media',
+        'url': '/tool/media/control',
+        'icon': '/img/multimedia.svg',
         'config': {
           'in': 1000
         }
@@ -58,7 +87,7 @@ function getTools() {
         'name': 'Screenshot',
         'description': 'Take a screenshot',
         'url': '/tool/screen/screenshot',
-        'icon': '/img/screenshot.png',
+        'icon': '/img/screenshot.svg',
         'config': {
           'in': 1000
         }
@@ -67,7 +96,7 @@ function getTools() {
         'name': 'Record',
         'description': 'Record the screen',
         'url': '/tool/screen/record',
-        'icon': '/img/record.png',
+        'icon': '/img/record.svg',
         'config': {
           'in': 1000
         }
