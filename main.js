@@ -27,11 +27,10 @@ function createWindow() {
 Menu.setApplicationMenu(null);
 
 app.whenReady().then(() => {
-  //const db = initializeApp();
-  // Ignora los errores de certificados no válidos
+
   session.defaultSession.webRequest.onBeforeSendHeaders((details, callback) => {
     details.requestHeaders['User-Agent'] = 'Chrome';
-    details.requestHeaders['Server-Token'] = 'abc';
+    details.requestHeaders['is-server-side'] = 'true';
     callback({ cancel: false, requestHeaders: details.requestHeaders });
   });
 

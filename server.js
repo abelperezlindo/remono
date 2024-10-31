@@ -46,12 +46,21 @@ serverApp.use((req, res, next) => {
   next();
 });
 
-// Ruta de ejemplo
-serverApp.get('/', (req, res) => {
-  // Server side app config.
-  if (!req.headers['server-Token'] || req.headers['server-Token'] !== 'abc') {
-    return res.status(401).json({ error: 'No autorizado' });
+async function checkServerToken(req, res, next) {
+  try {
+    if (req.headers['is-server-side'] == 'true') {
+        next(); // Token válido, continuar con la solicitud
+    } else {
+      res.status(401).send('Token inválido');
+    }
+  } catch (error) {
+      res.status(500).send('Error al verificar el token');
   }
+}
+
+// Ruta de ejemplo
+serverApp.get('/', checkServerToken, (req, res) => {
+
   const username = os.userInfo().username;
   res.render('index', { username });
 });
