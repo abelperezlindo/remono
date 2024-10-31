@@ -6,7 +6,8 @@
   "scripts": {
     "start": "electron .",
     "trace": "electron --trace-warnings .",
-    "test": "test"
+    "test": "test",
+    "fix-ubuntu": "sudo sysctl -w kernel.apparmor_restrict_unprivileged_userns=0"
   },
   "repository": {
     "type": "git",
