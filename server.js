@@ -58,6 +58,19 @@ async function checkServerToken(req, res, next) {
   }
 }
 
+async function checkClientToken(req, res, next) {
+
+  try {
+    if (req.headers['is-server-side'] == 'true') {
+      res.status(401).send('Cant acces in server side');
+    } else {
+      next(); // Token válido, continuar con la solicitud
+    }
+  } catch (error) {
+      res.status(500).send('Error al verificar el token');
+  }
+}
+
 // Ruta de ejemplo
 serverApp.get('/', checkServerToken, (req, res) => {
 
@@ -66,11 +79,7 @@ serverApp.get('/', checkServerToken, (req, res) => {
 });
 
 // Register
-serverApp.get('/register', async (req, res) => {
-
-  if (!req.headers['server-Token'] || req.headers['server-Token'] !== 'abc') {
-    return res.status(401).json({ error: 'No autorizado' });
-  }
+serverApp.get('/register', checkServerToken, async (req, res) => {
 
   // sign up jwt exp in 20 minutes
   var token = jwt.sign({
@@ -88,10 +97,7 @@ serverApp.get('/register', async (req, res) => {
   }
 });
 
-serverApp.get('/register/:jwt', function(req, res) {
-  if (req.headers['server-Token'] == 'abc') {
-    return res.status(300).json({ error: 'Solo desde un dispositivo cliente' });
-  }
+serverApp.get('/register/:jwt', checkClientToken, function(req, res) {
 
   jwt.verify(req.params.jwt, 'replace_this_with_a_secret', function(err, decoded) {
     if (err) return res.status(401).json({ error: 'Token no válido' });
@@ -101,7 +107,7 @@ serverApp.get('/register/:jwt', function(req, res) {
   });
 });
 
-serverApp.post('/register/:jwt/confirm', function(req, res) {
+serverApp.post('/register/:jwt/confirm', checkClientToken, function(req, res) {
   console.log(req);
   const name = req.body.name;
   const initToken = req.params.jwt;
@@ -123,10 +129,7 @@ serverApp.post('/register/:jwt/confirm', function(req, res) {
   });
 });
 
-serverApp.get('/panel', function(req, res) {
-  if (req.headers['server-Token'] == 'abc') {
-    return res.status(401).json({ error: 'Solo desde un dispositivo cliente' });
-  }
+serverApp.get('/panel', checkClientToken, function(req, res) {
   const tools = getTools();
   // Check if the user is logged in, see the cookie or the session. WIP
   var acces_jwt = jwt.sign({
@@ -140,19 +143,12 @@ serverApp.get('/panel', function(req, res) {
 });
 
 // Ruta para mostrar los encabezados de la solicitud
-serverApp.get('/headers', (req, res) => {
-  if (!req.headers['server-Token'] || req.headers['server-Token'] !== 'abc') {
-    return res.status(401).json({ error: 'No autorizado' });
-  }
-  res.json({'msg': 'OK'});
-});
-
-// Ruta para mostrar los encabezados de la solicitud
 serverApp.get('/about', (req, res) => {
   res.render('about');
 });
+
 // Ruta para mostrar los encabezados de la solicitud
-serverApp.get('/config', (req, res) => {
+serverApp.get('/config', checkServerToken, (req, res) => {
   const tools = getTools();
   // Check if the user is logged in, see the cookie or the session. WIP
   var acces_jwt = jwt.sign({
