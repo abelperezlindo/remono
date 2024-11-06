@@ -1,7 +1,5 @@
 
-const definition = {
+module.exports = {
   name: 'pingpong',
   description: 'Ping Pong'
 }
-
-module.exports = { definition };
