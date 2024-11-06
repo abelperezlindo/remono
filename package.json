@@ -7,7 +7,9 @@
     "start": "electron .",
     "trace": "electron --trace-warnings .",
     "test": "test",
-    "fix-ubuntu": "sudo sysctl -w kernel.apparmor_restrict_unprivileged_userns=0"
+    "mouse": "node mouse.js",
+    "fix-ubuntu": "sudo sysctl -w kernel.apparmor_restrict_unprivileged_userns=0",
+    "robotjs-pre": "sudo apt-get install -y libxtst-dev libpng++-dev"
   },
   "repository": {
     "type": "git",
@@ -37,6 +39,7 @@
     "liquidjs": "^10.17.0",
     "npm": "^10.9.0",
     "qrcode": "^1.5.4",
+    "robotjs": "^0.6.0",
     "selfsigned": "^2.4.1",
     "sqlite3": "^5.1.7",
     "ws": "^8.18.0"
