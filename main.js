@@ -1,12 +1,15 @@
 // main.js
 require('./server');
+// const path = require('path');
+// const m = require('./core/ModuleDiscovery');
 const db = require('./initialize');
 const { app, BrowserWindow, session, Menu} = require('electron');
 const IP = require('./utils/ip');
 const PORT = 3055;
 const url = `https://${IP}:${PORT}/`;
 console.log(`Server running at ${url}`);
-
+// const discoveredModules = m.discoverModules(path.join(__dirname, 'core/modules'));
+// console.log(discoveredModules);
 
 function createWindow() {
   const win = new BrowserWindow({
