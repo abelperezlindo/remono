@@ -28,7 +28,7 @@ const engine = new Liquid({
 
 serverApp.engine('liquid', engine.express()); // Configura el motor de plantillas
 serverApp.set('view engine', 'liquid'); // Establece LiquidJS como el motor de vistas
-serverApp.set('views', path.join(__dirname, 'views')); // Carpeta de vistas
+serverApp.set('views', [path.join(__dirname, 'views'), path.join(__dirname, 'core', 'modules', '*','views')]); // Carpeta de vistas
 
 // Configura Express para servir archivos estáticos
 serverApp.use(express.static(path.join(__dirname, 'public')));

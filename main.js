@@ -1,7 +1,7 @@
 // main.js
 require('./server');
 // const path = require('path');
-// const m = require('./core/ModuleDiscovery');
+// const m = require('./core/discoverModules');
 const db = require('./initialize');
 const { app, BrowserWindow, session, Menu} = require('electron');
 const IP = require('./utils/ip');
