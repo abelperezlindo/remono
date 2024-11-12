@@ -73,7 +73,7 @@ async function checkClientToken(req, res, next) {
 
 // Ruta de ejemplo
 serverApp.get('/', checkServerToken, (req, res) => {
-
+  console.log(`El secreto como global ${global.secret}`);
   const username = os.userInfo().username;
   res.render('index', { username });
 });

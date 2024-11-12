@@ -10,4 +10,8 @@ db.bootstrap().then((msg) => {
   console.error(err);
 });
 
+(async () => {
+  global.secret = await db.getVar('SECRET');
+})();
+
 module.exports = db;

@@ -1,4 +1,5 @@
 // main.js
+'use strict';
 require('./server');
 // const path = require('path');
 // const m = require('./core/discoverModules');
@@ -42,7 +43,11 @@ function createMainWindow() {
 }
 
 Menu.setApplicationMenu(null);
-
+async function checkGlobal() {
+  if (!global.secret) {
+    setTimeout(checkGlobal, 1000);
+  }
+}
 app.whenReady().then(() => {
   createSplashScreen();
   session.defaultSession.webRequest.onBeforeSendHeaders((details, callback) => {
@@ -55,11 +60,13 @@ app.whenReady().then(() => {
     callback(0); // Ignora todos los errores de certificados
   });
 
-  setTimeout(() => {
-    createMainWindow();
-    splash.close();
-  }, 5000); // Espera 5 segundos antes de mostrar la ventana principal
-
+  checkGlobal().then(() => {
+    // En el mejor de los casos mostrar solo un segundo el splash.
+    setTimeout(() => {
+      createMainWindow();
+      splash.close();
+    }, 1000);
+  });
 });
 
 app.on('window-all-closed', () => {
