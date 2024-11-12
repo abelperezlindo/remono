@@ -11,8 +11,22 @@ console.log(`Server running at ${url}`);
 // const discoveredModules = m.discoverModules(path.join(__dirname, 'core/modules'));
 // console.log(discoveredModules);
 
-function createWindow() {
-  const win = new BrowserWindow({
+let mainWindow;
+let splash;
+
+function createSplashScreen() {
+  splash = new BrowserWindow({
+    width: 400,
+    height: 300,
+    frame: false,
+    alwaysOnTop: true,
+    transparent: true,
+  });
+  splash.loadFile('core/splash.html');
+}
+
+function createMainWindow() {
+  mainWindow = new BrowserWindow({
     width: 1000,
     height: 750,
     webPreferences: {
@@ -22,15 +36,15 @@ function createWindow() {
 
   // win.loadFile('index.html');
   // Carga la aplicación desde el servidor Express
-  win.loadURL(url);
+  mainWindow.loadURL(url);
   // Abre las herramientas de desarrollo
-  win.webContents.openDevTools();
+  mainWindow.webContents.openDevTools();
 }
 
 Menu.setApplicationMenu(null);
 
 app.whenReady().then(() => {
-
+  createSplashScreen();
   session.defaultSession.webRequest.onBeforeSendHeaders((details, callback) => {
     details.requestHeaders['User-Agent'] = 'Chrome';
     details.requestHeaders['is-server-side'] = 'true';
@@ -41,7 +55,11 @@ app.whenReady().then(() => {
     callback(0); // Ignora todos los errores de certificados
   });
 
-  createWindow();
+  setTimeout(() => {
+    createMainWindow();
+    splash.close();
+  }, 5000); // Espera 5 segundos antes de mostrar la ventana principal
+
 });
 
 app.on('window-all-closed', () => {
@@ -52,6 +70,6 @@ app.on('window-all-closed', () => {
 
 app.on('activate', () => {
   if (BrowserWindow.getAllWindows().length === 0) {
-    createWindow();
+    createMainWindow();
   }
 });
