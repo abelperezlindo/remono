@@ -13,6 +13,7 @@ const WebSocket = require('ws');
 const cookieParser = require('cookie-parser');
 const IP = require('./utils/ip');
 const db = require('./database');
+const clientRoutes = require('./core/clientRoutes');
 const PORT = 3055;
 const IP_URL = `https://${IP}:${PORT}/`;
 const lang = 'en';
@@ -29,6 +30,8 @@ const engine = new Liquid({
 serverApp.engine('liquid', engine.express()); // Configura el motor de plantillas
 serverApp.set('view engine', 'liquid'); // Establece LiquidJS como el motor de vistas
 serverApp.set('views', [path.join(__dirname, 'views'), path.join(__dirname, 'core', 'modules', '*','views')]); // Carpeta de vistas
+
+serverApp.use('/client', clientRoutes);
 
 // Configura Express para servir archivos estáticos
 serverApp.use(express.static(path.join(__dirname, 'public')));
