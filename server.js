@@ -73,7 +73,6 @@ async function checkClientToken(req, res, next) {
 
 // Ruta de ejemplo
 serverApp.get('/', checkServerToken, (req, res) => {
-  console.log(`El secreto como global ${global.secret}`);
   const username = os.userInfo().username;
   res.render('index', { username });
 });
@@ -85,7 +84,7 @@ serverApp.get('/register', checkServerToken, async (req, res) => {
   var token = jwt.sign({
     opt: 'new client',
     exp: Math.floor(Date.now() / 1000) + (60 * 20),
-  }, 'replace_this_with_a_secret');
+  }, global.secret);
 
   try {
     let url = `${IP_URL}register/${token}`;
@@ -99,7 +98,7 @@ serverApp.get('/register', checkServerToken, async (req, res) => {
 
 serverApp.get('/register/:jwt', checkClientToken, function(req, res) {
 
-  jwt.verify(req.params.jwt, 'replace_this_with_a_secret', function(err, decoded) {
+  jwt.verify(req.params.jwt, global.secret, function(err, decoded) {
     if (err) return res.status(401).json({ error: 'Token no válido' });
     // Validate the token
     console.log(decoded);
@@ -114,7 +113,7 @@ serverApp.post('/register/:jwt/confirm', checkClientToken, function(req, res) {
   if (req.headers['server-Token'] == 'abc') {
     return res.status(401).json({ error: 'Solo desde un dispositivo cliente' });
   }
-  jwt.verify(initToken, 'replace_this_with_a_secret', function(err, decoded) {
+  jwt.verify(initToken, global.secret, function(err, decoded) {
     if (err) return res.status(401).json({ error: 'Token no válido', err });
     // Validate the token
     // Save the user
@@ -135,7 +134,7 @@ serverApp.get('/panel', checkClientToken, function(req, res) {
   var acces_jwt = jwt.sign({
     opt: 'new client',
     exp: Math.floor(Date.now() / 1000) + (60 * 20),
-  }, 'replace_this_with_a_secret');
+  }, global.secret);
 
   // Set a cookie
   res.cookie('access_jwt', acces_jwt, { httpOnly: true, secure: true });
@@ -154,7 +153,7 @@ serverApp.get('/config', checkServerToken, (req, res) => {
   var acces_jwt = jwt.sign({
     opt: 'new client',
     exp: Math.floor(Date.now() / 1000) + (60 * 20),
-  }, 'replace_this_with_a_secret');
+  }, global.secret);
 
   res.render('config', { tools });
 });
