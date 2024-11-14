@@ -14,6 +14,7 @@ const cookieParser = require('cookie-parser');
 const IP = require('./utils/ip');
 const db = require('./database');
 const clientRoutes = require('./core/clientRoutes');
+const adminRoutes = require('./core/adminRoutes');
 const PORT = 3055;
 const IP_URL = `https://${IP}:${PORT}/`;
 const lang = 'en';
@@ -32,7 +33,7 @@ serverApp.set('view engine', 'liquid'); // Establece LiquidJS como el motor de v
 serverApp.set('views', [path.join(__dirname, 'views'), path.join(__dirname, 'core', 'modules', '*','views')]); // Carpeta de vistas
 
 serverApp.use('/client', clientRoutes);
-
+serverApp.use('/admin', adminRoutes);
 // Configura Express para servir archivos estáticos
 serverApp.use(express.static(path.join(__dirname, 'public')));
 
