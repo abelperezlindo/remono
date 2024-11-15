@@ -6,9 +6,8 @@ const path = require('path');
 const https = require('https');
 const selfsigned = require('selfsigned');
 const serverApp = express();
-const QRCode = require('qrcode');
 const getTools = require('./configs');
-var jwt = require('jsonwebtoken');
+const jwt = require('jsonwebtoken');
 const WebSocket = require('ws');
 const cookieParser = require('cookie-parser');
 const IP = require('./utils/ip');
@@ -81,24 +80,6 @@ serverApp.get('/', checkServerToken, (req, res) => {
   res.render('index', { username });
 });
 
-// Register
-serverApp.get('/qr', checkServerToken, async (req, res) => {
-
-  // sign up jwt exp in 20 minutes
-  var token = jwt.sign({
-    opt: 'new client',
-    exp: Math.floor(Date.now() / 1000) + (60 * 20),
-  }, global.secret);
-
-  try {
-    let url = `${IP_URL}register/${token}`;
-    const qrCodeDataURL = await QRCode.toDataURL(url);
-    res.render('register', { url, token, qrCodeDataURL });
-  } catch (err) {
-    console.error(err);
-    res.status(500).send('Error generating QR code');
-  }
-});
 
 serverApp.get('/register/:jwt', checkClientToken, function(req, res) {
 
