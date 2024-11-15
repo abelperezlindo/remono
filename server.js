@@ -82,7 +82,7 @@ serverApp.get('/', checkServerToken, (req, res) => {
 });
 
 // Register
-serverApp.get('/register', checkServerToken, async (req, res) => {
+serverApp.get('/qr', checkServerToken, async (req, res) => {
 
   // sign up jwt exp in 20 minutes
   var token = jwt.sign({
