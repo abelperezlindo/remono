@@ -2,8 +2,8 @@ const client = require('./client');
 const admin = require('./admin');
 
 module.exports = {
-  name: 'PingPong',
-  description: 'Send a ping and receive a pong',
+  name: 'Send Message',
+  description: 'Send a message to the server',
   version: 'Alpha1',
   type: 'io',
   default: {
