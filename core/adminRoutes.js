@@ -22,12 +22,10 @@ async function checkServerToken(req, res, next) {
 // Mueve aquí las rutas que usan checkServerToken.
 router.use(checkServerToken);
 
-router.get('/admin-route1', (req, res) => {
-  res.send('Admin Route 1');
-});
-
-router.post('/admin-route2', (req, res) => {
-  res.send('Admin Route 2');
+// Ruta de ejemplo
+router.get('/home', (req, res) => {
+  const username = os.userInfo().username;
+  res.render('index', { username });
 });
 
 // Register
@@ -40,7 +38,7 @@ router.get('/qr', async (req, res) => {
   }, global.secret);
 
   try {
-    let url = `${IP_URL}register/${token}`;
+    let url = `${IP_URL}client/register/${token}`;
     const qrCodeDataURL = await QRCode.toDataURL(url);
     res.render('register', { url, token, qrCodeDataURL });
   } catch (err) {
@@ -49,5 +47,16 @@ router.get('/qr', async (req, res) => {
   }
 });
 
+// Ruta para mostrar los encabezados de la solicitud
+router.get('/config', (req, res) => {
+  const tools = getTools();
+  // Check if the user is logged in, see the cookie or the session. WIP
+  var acces_jwt = jwt.sign({
+    opt: 'new client',
+    exp: Math.floor(Date.now() / 1000) + (60 * 20),
+  }, global.secret);
+
+  res.render('config', { tools });
+});
 
 module.exports = router;

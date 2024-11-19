@@ -15,7 +15,6 @@ const db = require('./database');
 const clientRoutes = require('./core/clientRoutes');
 const adminRoutes = require('./core/adminRoutes');
 const PORT = 3055;
-const IP_URL = `https://${IP}:${PORT}/`;
 const lang = 'en';
 
 // Genera un certificado SSL autofirmado
@@ -49,98 +48,9 @@ serverApp.use((req, res, next) => {
   next();
 });
 
-async function checkServerToken(req, res, next) {
-  try {
-    if (req.headers['is-server-side'] == 'true') {
-        next(); // Token válido, continuar con la solicitud
-    } else {
-      res.status(401).send('Token inválido');
-    }
-  } catch (error) {
-      res.status(500).send('Error al verificar el token');
-  }
-}
-
-async function checkClientToken(req, res, next) {
-
-  try {
-    if (req.headers['is-server-side'] == 'true') {
-      res.status(401).send('Cant acces in server side');
-    } else {
-      next(); // Token válido, continuar con la solicitud
-    }
-  } catch (error) {
-      res.status(500).send('Error al verificar el token');
-  }
-}
-
-// Ruta de ejemplo
-serverApp.get('/', checkServerToken, (req, res) => {
-  const username = os.userInfo().username;
-  res.render('index', { username });
-});
-
-
-serverApp.get('/register/:jwt', checkClientToken, function(req, res) {
-
-  jwt.verify(req.params.jwt, global.secret, function(err, decoded) {
-    if (err) return res.status(401).json({ error: 'Token no válido' });
-    // Validate the token
-    console.log(decoded);
-    res.render('register-confirm', { payload: decoded.exp, jwt: req.params.jwt});
-  });
-});
-
-serverApp.post('/register/:jwt/confirm', checkClientToken, function(req, res) {
-  console.log(req);
-  const name = req.body.name;
-  const initToken = req.params.jwt;
-  if (req.headers['server-Token'] == 'abc') {
-    return res.status(401).json({ error: 'Solo desde un dispositivo cliente' });
-  }
-  jwt.verify(initToken, global.secret, function(err, decoded) {
-    if (err) return res.status(401).json({ error: 'Token no válido', err });
-    // Validate the token
-    // Save the user
-    // Redirect to the panel
-    db.setDevice({name, initToken})
-      .then((result) => {
-        // Results is device id.
-      }).catch((err) => {
-        console.error(err);
-      });
-    res.redirect('/panel');
-  });
-});
-
-serverApp.get('/panel', checkClientToken, function(req, res) {
-  const tools = getTools();
-  // Check if the user is logged in, see the cookie or the session. WIP
-  var acces_jwt = jwt.sign({
-    opt: 'new client',
-    exp: Math.floor(Date.now() / 1000) + (60 * 20),
-  }, global.secret);
-
-  // Set a cookie
-  res.cookie('access_jwt', acces_jwt, { httpOnly: true, secure: true });
-  res.render('panel', { tools });
-});
-
 // Ruta para mostrar los encabezados de la solicitud
 serverApp.get('/about', (req, res) => {
   res.render('about');
-});
-
-// Ruta para mostrar los encabezados de la solicitud
-serverApp.get('/config', checkServerToken, (req, res) => {
-  const tools = getTools();
-  // Check if the user is logged in, see the cookie or the session. WIP
-  var acces_jwt = jwt.sign({
-    opt: 'new client',
-    exp: Math.floor(Date.now() / 1000) + (60 * 20),
-  }, global.secret);
-
-  res.render('config', { tools });
 });
 
 // Configura HTTPS
