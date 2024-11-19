@@ -1,5 +1,4 @@
 // server.js
-const os = require('os');
 const { Liquid } = require('liquidjs'); // Requiere LiquidJS
 const express = require('express');
 const path = require('path');

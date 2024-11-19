@@ -2,11 +2,12 @@
 const express = require('express');
 const router = express.Router();
 const QRCode = require('qrcode');
+const os = require('os');
 const jwt = require('jsonwebtoken');
 const IP = require('../utils/ip');
 const IP_URL = `https://${IP}:3055/`;
 const PORT = 3055;
-const getTools = require('./configs');
+const getTools = require('../configs');
 
 async function checkServerToken(req, res, next) {
   try {

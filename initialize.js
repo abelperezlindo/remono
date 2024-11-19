@@ -1,7 +1,7 @@
 // initialize.js
 const sqlite3 = require('sqlite3').verbose();
 
-const db = require('./database');
+const db = require('./core/database');
 
 db.bootstrap().then((msg) => {
   console.log('Database has been initialized');

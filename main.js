@@ -37,7 +37,7 @@ function createMainWindow() {
 
   // win.loadFile('index.html');
   // Carga la aplicación desde el servidor Express
-  mainWindow.loadURL(url);
+  mainWindow.loadURL(url + 'admin/home');
   // Abre las herramientas de desarrollo
   mainWindow.webContents.openDevTools();
 }
