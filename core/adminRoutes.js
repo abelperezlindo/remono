@@ -9,6 +9,10 @@ const IP_URL = `https://${IP}:3055/`;
 const PORT = 3055;
 const getTools = require('../configs');
 
+const path = require('path');
+const m = require('./modules/discoverModules');
+const discoveredModules = m.discoverModules(path.join(__dirname, '/modules'));
+
 async function checkServerToken(req, res, next) {
   try {
     if (req.headers['is-server-side'] == 'true') {
@@ -58,6 +62,13 @@ router.get('/config', (req, res) => {
     exp: Math.floor(Date.now() / 1000) + (60 * 20),
   }, global.secret);
 
+  res.render('config', { tools });
+});
+
+// Ruta para mostrar los encabezados de la solicitud
+router.get('/modules', (req, res) => {
+  console.log(discoveredModules);
+  const tools = {};
   res.render('config', { tools });
 });
 

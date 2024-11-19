@@ -1,0 +1,30 @@
+<!-- views/config.liquid -->
+{% layout 'layout' %}
+
+{% block title %}Config{% endblock %}
+
+{% block title-header %}Config{% endblock %}
+
+{% block content %}
+<section>
+  <div class="container">
+    {% for tool in tools %}
+
+    <h2 class="subtitle">{{ tool.0 }}</h2>
+    <section class="flex">
+      {% for item in tool.1 %}
+      <div class="card" onclick="window.location.href='{{ item.1.toute }}'">
+        <div class="card-header">
+          <img src="{{ item.1.icon }}" alt="{{ item.1.name }}">
+        </div>
+        <div class="card-body">
+          <h3 class="card-title">{{ item.1.name }}</h3>
+          {{ item.1.description }}
+        </div>
+      </div>
+      {% endfor %}
+    </section>
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}
