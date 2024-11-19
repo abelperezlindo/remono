@@ -6,6 +6,7 @@ const jwt = require('jsonwebtoken');
 const IP = require('../utils/ip');
 const IP_URL = `https://${IP}:3055/`;
 const PORT = 3055;
+const getTools = require('./configs');
 
 async function checkServerToken(req, res, next) {
   try {
