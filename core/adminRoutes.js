@@ -8,7 +8,7 @@ const IP = require('../utils/ip');
 const IP_URL = `https://${IP}:3055/`;
 const PORT = 3055;
 const getTools = require('../configs');
-
+const hooks = require('./hooks');
 const path = require('path');
 const m = require('./modules/discoverModules');
 const discoveredModules = m.discoverModules(path.join(__dirname, '/modules'));
@@ -65,11 +65,34 @@ router.get('/config', (req, res) => {
   res.render('config', { tools });
 });
 
-// Ruta para mostrar los encabezados de la solicitud
 router.get('/modules', (req, res) => {
-  console.log(discoveredModules);
-  const tools = {};
-  res.render('config', { tools });
+  let keys = Object.keys(discoveredModules);
+  console.log(keys);
+  res.render('modules', { keys,  modules: discoveredModules });
+});
+
+// Ruta para configurar módulos
+router.get('/module/:module/config', (req, res, next) => {
+  const moduleName = req.params.module;
+  const middleware = hooks.getMiddleware(moduleName);
+
+  if (middleware) {
+    middleware(req, res, next);
+  } else {
+    res.status(404).send('Module not found');
+  }
+});
+
+// Ruta para configurar módulos
+router.post('/module/:module/config', (req, res, next) => {
+  const moduleName = req.params.module;
+  const middleware = hooks.getMiddleware(moduleName);
+
+  if (middleware) {
+    middleware(req, res, next);
+  } else {
+    res.status(404).send('Module not found');
+  }
 });
 
 module.exports = router;

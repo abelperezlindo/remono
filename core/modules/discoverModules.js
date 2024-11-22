@@ -22,8 +22,3 @@ const discoverModules = function (directory) {
 }
 
 module.exports = { discoverModules };
-
-/*
-const discoveredModules = discoverModules(path.join(__dirname, 'modules'));
-Object.assign(tools, discoveredModules);
-*/

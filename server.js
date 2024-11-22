@@ -7,6 +7,7 @@ const selfsigned = require('selfsigned');
 const serverApp = express();
 const WebSocket = require('ws');
 const cookieParser = require('cookie-parser');
+const registerPublicFolders = require('./core/publicFolders');
 const clientRoutes = require('./core/clientRoutes');
 const adminRoutes = require('./core/adminRoutes');
 const PORT = 3055;
@@ -29,7 +30,8 @@ serverApp.use('/client', clientRoutes);
 serverApp.use('/admin', adminRoutes);
 // Configura Express para servir archivos estáticos
 serverApp.use(express.static(path.join(__dirname, 'public')));
-
+// Registra carpetas públicas dinámicamente
+registerPublicFolders(serverApp, path.join(__dirname, 'core', 'modules'));
 // Configura cookie-parser
 serverApp.use(cookieParser());
 
