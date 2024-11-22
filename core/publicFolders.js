@@ -12,6 +12,7 @@ const registerPublicFolders = (app, modulesPath) => {
       console.log(`Public folder registered for module: ${moduleName}`);
     }
   });
+
 };
 
 module.exports = registerPublicFolders;
