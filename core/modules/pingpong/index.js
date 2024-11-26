@@ -3,7 +3,8 @@ const hooks = require('../../hooks'); // Importa los hooks
 // Define el middleware para el módulo
 const moduleMiddleware = (req, res, next) => {
   // Lógica de configuración del módulo
-  res.send(`Configuring module: ${req.params.module}`);
+  //res.send(`Configuring module: ${req.params.module}`);
+  res.render('x', { moduleName: req.params.module });
 };
 
 // Registra el middleware en los hooks

@@ -18,23 +18,24 @@ const lang = 'en';
 const pems = selfsigned.generate(null, { days: 365 });
 
 // Configura LiquidJS como el motor de plantillas
-const engine = new Liquid({
+let engine = new Liquid({
   root: path.join(__dirname, 'views'), // Carpeta de vistas
   extname: '.liquid' // Extensión de archivos de plantilla
 });
+const templatesFolders = registerTemplateFolders(path.join(__dirname, 'core', 'modules'));
 
 serverApp.engine('liquid', engine.express()); // Configura el motor de plantillas
 serverApp.set('view engine', 'liquid'); // Establece LiquidJS como el motor de vistas
-serverApp.set('views', [path.join(__dirname, 'views'), path.join(__dirname, 'core', 'modules', '*','views')]); // Carpeta de vistas
+// serverApp.set('views', [path.join(__dirname, 'views')]); // Carpeta de vistas
+serverApp.set('views', templatesFolders); // Carpeta de vistas
 
+// Registra carpetas de plantillas dinámicamente
 serverApp.use('/client', clientRoutes);
 serverApp.use('/admin', adminRoutes);
 // Configura Express para servir archivos estáticos
 serverApp.use(express.static(path.join(__dirname, 'public')));
 // Registra carpetas públicas dinámicamente
 registerPublicFolders(serverApp, path.join(__dirname, 'core', 'modules'));
-// Registra carpetas de plantillas dinámicamente
-registerTemplateFolders(engine, path.join(__dirname, 'core', 'modules'));
 
 // Configura cookie-parser
 serverApp.use(cookieParser());
