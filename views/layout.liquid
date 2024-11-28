@@ -16,10 +16,15 @@
       </h1>
       <nav>
         <ul class="nav-links" >
-          <li class="link"><a href="/admin/home">Home</a></li>
-          <li class="link"><a href="/admin/config">Config</a></li>
-          <li class="link"><a href="/admin/modules">Modules</a></li>
-          <li class="link"><a href="/admin/qr">Nuevo Dispositivo</a></li>
+          {% if user.type == 'admin' %}
+            <li class="link"><a href="/admin/home">Home</a></li>
+            <li class="link"><a href="/admin/config">Config</a></li>
+            <li class="link"><a href="/admin/modules">Modules</a></li>
+            <li class="link"><a href="/admin/panel">Panel</a></li>
+            <li class="link"><a href="/admin/qr">Nuevo Dispositivo</a></li>
+          {%  elsif user.type == 'client' %}
+            <li class="link"><a href="/client/modules">Modules</a></li>
+          {% endif %}
           <li class="link"><a href="/about">About</a></li>
         </ul>
       </nav>
