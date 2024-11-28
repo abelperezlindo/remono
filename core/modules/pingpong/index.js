@@ -14,7 +14,7 @@ const moduleClientMiddleware = (req, res, next) => {
     // do form handling
     res.send(`Pong`);
   } else {
-    res.render('pingpong', { moduleName: req.params.module });
+    res.render('pingpong', { user: res.locals.user, moduleName: req.params.module });
   }
 
 };

@@ -1,0 +1,14 @@
+<!-- views/about.liquid -->
+{% layout 'layout' %}
+
+{% block title %}Send a message{% endblock %}
+
+{% block title-header %}Send a message{% endblock %}
+
+{% block content %}
+  <p> Send a message to the server and wait for the pong response. </p>
+  <form method="post">
+    <textarea name="message" placeholder="Message"></textarea>
+    <button type="submit">Send</button>
+  </form>
+{% endblock %}
