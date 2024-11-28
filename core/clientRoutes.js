@@ -9,6 +9,10 @@ const PORT = 3055;
 const getTools = require('../configs');
 const hooks = require('./hooks');
 
+const user = {
+  type: 'client',
+};
+
 async function checkClientToken(req, res, next) {
 
   try {
@@ -31,7 +35,7 @@ router.get('/register/:jwt', function(req, res) {
     if (err) return res.status(401).json({ error: 'Token no válido' });
     // Validate the token
     console.log(decoded);
-    res.render('register-confirm', { payload: decoded.exp, jwt: req.params.jwt});
+    res.render('register-confirm', { user, payload: decoded.exp, jwt: req.params.jwt});
   });
 });
 
@@ -67,13 +71,20 @@ router.get('/panel', function(req, res) {
 
   // Set a cookie
   res.cookie('access_jwt', acces_jwt, { httpOnly: true, secure: true });
-  res.render('panel', { tools });
+  res.render('panel', {user, tools });
+});
+
+router.get('/modules', (req, res) => {
+  let keys = Object.keys(discoveredModules);
+  console.log(keys);
+  res.render('modules', { user, keys,  modules: discoveredModules });
 });
 
 // Ruta para configurar módulos GET
 router.get('/module/:module', (req, res, next) => {
   const moduleName = req.params.module;
   const middleware = hooks.getClientMiddleware(moduleName);
+  res.locals.user = user;
 
   if (middleware) {
     middleware(req, res, next);
@@ -86,6 +97,7 @@ router.get('/module/:module', (req, res, next) => {
 router.post('/module/:module', (req, res, next) => {
   const moduleName = req.params.module;
   const middleware = hooks.getClientMiddleware(moduleName);
+  res.locals.user = user;
 
   if (middleware) {
     middleware(req, res, next);

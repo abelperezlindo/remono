@@ -13,6 +13,10 @@ const path = require('path');
 const m = require('./modules/discoverModules');
 const discoveredModules = m.discoverModules(path.join(__dirname, '/modules'));
 
+const user = {
+  type: 'admin',
+};
+
 async function checkServerToken(req, res, next) {
   try {
     if (req.headers['is-server-side'] == 'true') {
@@ -31,7 +35,7 @@ router.use(checkServerToken);
 // Ruta de ejemplo
 router.get('/home', (req, res) => {
   const username = os.userInfo().username;
-  res.render('index', { username });
+  res.render('index', { user, username });
 });
 
 // Register
@@ -46,7 +50,7 @@ router.get('/qr', async (req, res) => {
   try {
     let url = `${IP_URL}client/register/${token}`;
     const qrCodeDataURL = await QRCode.toDataURL(url);
-    res.render('register', { url, token, qrCodeDataURL });
+    res.render('register', { user, url, token, qrCodeDataURL });
   } catch (err) {
     console.error(err);
     res.status(500).send('Error generating QR code');
@@ -62,19 +66,20 @@ router.get('/config', (req, res) => {
     exp: Math.floor(Date.now() / 1000) + (60 * 20),
   }, global.secret);
 
-  res.render('config', { tools });
+  res.render('config', { user, tools });
 });
 
 router.get('/modules', (req, res) => {
   let keys = Object.keys(discoveredModules);
   console.log(keys);
-  res.render('modules', { keys,  modules: discoveredModules });
+  res.render('modules', { user, keys,  modules: discoveredModules });
 });
 
 // Ruta para configurar módulos GET
 router.get('/module/:module', (req, res, next) => {
   const moduleName = req.params.module;
   const middleware = hooks.getAdminMiddleware(moduleName);
+  res.locals.user = user;
 
   if (middleware) {
     middleware(req, res, next);
@@ -87,6 +92,7 @@ router.get('/module/:module', (req, res, next) => {
 router.post('/module/:module', (req, res, next) => {
   const moduleName = req.params.module;
   const middleware = hooks.getAdminMiddleware(moduleName);
+  res.locals.user = user;
 
   if (middleware) {
     middleware(req, res, next);
