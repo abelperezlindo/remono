@@ -1,14 +1,27 @@
 const hooks = require('../../hooks'); // Importa los hooks
 
 // Define el middleware para el módulo
-const moduleMiddleware = (req, res, next) => {
+const moduleAdminMiddleware = (req, res, next) => {
+  res.send(`Nothing to see here`);
+};
+
+// Define el middleware para el módulo
+const moduleClientMiddleware = (req, res, next) => {
   // Lógica de configuración del módulo
-  //res.send(`Configuring module: ${req.params.module}`);
-  res.render('x', { moduleName: req.params.module });
+  // TODO
+  // If the request is a POST request, handle the form data.
+  if (req.method == "POST") {
+    // do form handling
+    res.send(`Pong`);
+  } else {
+    res.render('pingpong', { moduleName: req.params.module });
+  }
+
 };
 
 // Registra el middleware en los hooks
-hooks.registerMiddleware('pingpong', moduleMiddleware);
+hooks.registerAdminMiddleware('pingpong', moduleAdminMiddleware);
+hooks.registerClientMiddleware('pingpong', moduleClientMiddleware);
 
 module.exports = {
   name: 'PingPong',

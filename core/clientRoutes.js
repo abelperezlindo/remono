@@ -7,6 +7,7 @@ const IP = require('../utils/ip');
 const IP_URL = `https://${IP}:3055/`;
 const PORT = 3055;
 const getTools = require('../configs');
+const hooks = require('./hooks');
 
 async function checkClientToken(req, res, next) {
 
@@ -67,6 +68,30 @@ router.get('/panel', function(req, res) {
   // Set a cookie
   res.cookie('access_jwt', acces_jwt, { httpOnly: true, secure: true });
   res.render('panel', { tools });
+});
+
+// Ruta para configurar módulos GET
+router.get('/module/:module', (req, res, next) => {
+  const moduleName = req.params.module;
+  const middleware = hooks.getClientMiddleware(moduleName);
+
+  if (middleware) {
+    middleware(req, res, next);
+  } else {
+    res.status(404).send('Module not found');
+  }
+});
+
+// Ruta para configurar módulos POST
+router.post('/module/:module', (req, res, next) => {
+  const moduleName = req.params.module;
+  const middleware = hooks.getClientMiddleware(moduleName);
+
+  if (middleware) {
+    middleware(req, res, next);
+  } else {
+    res.status(404).send('Module not found');
+  }
 });
 
 module.exports = router;

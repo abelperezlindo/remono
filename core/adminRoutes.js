@@ -71,10 +71,10 @@ router.get('/modules', (req, res) => {
   res.render('modules', { keys,  modules: discoveredModules });
 });
 
-// Ruta para configurar módulos
-router.get('/module/:module/config', (req, res, next) => {
+// Ruta para configurar módulos GET
+router.get('/module/:module', (req, res, next) => {
   const moduleName = req.params.module;
-  const middleware = hooks.getMiddleware(moduleName);
+  const middleware = hooks.getAdminMiddleware(moduleName);
 
   if (middleware) {
     middleware(req, res, next);
@@ -83,10 +83,10 @@ router.get('/module/:module/config', (req, res, next) => {
   }
 });
 
-// Ruta para configurar módulos
-router.post('/module/:module/config', (req, res, next) => {
+// Ruta para configurar módulos POST
+router.post('/module/:module', (req, res, next) => {
   const moduleName = req.params.module;
-  const middleware = hooks.getMiddleware(moduleName);
+  const middleware = hooks.getAdminMiddleware(moduleName);
 
   if (middleware) {
     middleware(req, res, next);

@@ -1,0 +1,13 @@
+<!-- views/about.liquid -->
+{% layout 'layout' %}
+
+{% block title %}Ping pong{% endblock %}
+
+{% block title-header %}Send a ping{% endblock %}
+
+{% block content %}
+  <p> Send a ping to the server and wait for the pong response. </p>
+  <form method="post">
+    <button type="submit">Ping</button>
+  </form>
+{% endblock %}

@@ -1,12 +1,19 @@
 // hooks.js
 const hooks = {
-  middlewares: {},
+  adminMiddlewares: {},
+  clientMiddlewares: {},
 
-  registerMiddleware(moduleName, middleware) {
+  registerAdminMiddleware(moduleName, middleware) {
+    this.middlewares[moduleName] = middleware;
+  },
+  registerClientMiddleware(moduleName, middleware) {
     this.middlewares[moduleName] = middleware;
   },
 
-  getMiddleware(moduleName) {
+  getAdminMiddleware(moduleName) {
+    return this.middlewares[moduleName];
+  },
+  getClientMiddleware(moduleName) {
     return this.middlewares[moduleName];
   }
 };
