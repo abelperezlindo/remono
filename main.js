@@ -20,9 +20,10 @@ let splash;
 
 function createSplashScreen() {
   splash = new BrowserWindow({
-    width: 400,
-    height: 300,
+    width: 250,
+    height: 250,
     frame: false,
+    resizable: false,
     alwaysOnTop: true,
     transparent: true,
   });
