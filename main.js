@@ -1,5 +1,8 @@
 // main.js
 'use strict';
+
+const eventEmitter = require('./core/events');
+
 require('./server');
 // const path = require('path');
 // const m = require('./core/discoverModules');

@@ -12,6 +12,7 @@ const hooks = require('./hooks');
 const path = require('path');
 const m = require('./modules/discoverModules');
 const discoveredModules = m.discoverModules(path.join(__dirname, '/modules'));
+const eventEmitter = require('./events');
 
 const user = {
   type: 'admin',
@@ -70,6 +71,7 @@ router.get('/config', (req, res) => {
 });
 
 router.get('/modules', (req, res) => {
+  eventEmitter.emit('greet', 'Mundo');
   let keys = Object.keys(discoveredModules);
   console.log(keys);
   res.render('modules', { user, keys,  modules: discoveredModules });
