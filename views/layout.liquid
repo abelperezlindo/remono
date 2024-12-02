@@ -8,12 +8,14 @@
   <link rel="stylesheet" href="/css/styles.css">
 </head>
 <body>
-  <header style="app-region: drag;">
-    <div class="menu-wrapper">
+  <header>
+    <div id="title-bar" style="app-region: drag;">
       <div id="logo">reMono</div>
-      <h1>
+      <h1 class="title">
         {% block title-header %}My Website Header{% endblock %}
       </h1>
+    </div>
+    <div class="menu-wrapper">
       <nav>
         <ul class="nav-links" >
           {% if user.type == 'admin' %}
