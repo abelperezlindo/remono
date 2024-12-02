@@ -28,7 +28,9 @@
   },
   "homepage": "https://github.com/abelperezlindo/remono#readme",
   "devDependencies": {
-    "electron": "^32.2.0"
+    "electron": "^32.2.0",
+    "eslint": "^9.16.0",
+    "globals": "^15.13.0"
   },
   "dependencies": {
     "cookie-parser": "^1.4.7",
