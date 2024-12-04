@@ -8,6 +8,7 @@ const IP_URL = `https://${IP}:3055/`;
 const PORT = 3055;
 const getTools = require('../configs');
 const hooks = require('./hooks');
+const eventEmitter = require('./events');
 
 const user = {
   type: 'client',
@@ -57,6 +58,7 @@ router.post('/register/:jwt/confirm', function(req, res) {
       }).catch((err) => {
         console.error(err);
       });
+      eventEmitter.emit('notify', {body: 'Un nuevo dispositio se ah registrado!!'});
     res.redirect('client/panel');
   });
 });

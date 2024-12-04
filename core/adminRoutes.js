@@ -72,6 +72,7 @@ router.get('/config', (req, res) => {
 
 router.get('/modules', (req, res) => {
   eventEmitter.emit('greet', 'Mundo');
+  eventEmitter.emit('notify', {body: 'Notificación de lanzamiento'});
   let keys = Object.keys(discoveredModules);
   console.log(keys);
   res.render('modules', { user, keys,  modules: discoveredModules });
