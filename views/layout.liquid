@@ -22,15 +22,29 @@
         <nav>
           <ul class="nav-links" >
             {% if user.type == 'admin' %}
-              <li class="link "><a href="/admin/home">Home</a></li>
-              <li class="link"><a href="/admin/config">Config</a></li>
-              <li class="link"><a href="/admin/modules">Modules</a></li>
-              <li class="link"><a href="/admin/panel">Panel</a></li>
-              <li class="link"><a href="/admin/qr">Nuevo Dispositivo</a></li>
+              <li class="link {% if currentUrl ==  "/admin/home" %} active {% endif %}">
+                <a href="/admin/home">Home</a>
+              </li>
+              <li class="link {% if currentUrl ==  "/admin/config" %} active {% endif %}">
+                <a href="/admin/config">Config</a>
+              </li>
+              <li class="link {% if currentUrl ==  "/admin/modules" %} active {% endif %}">
+                <a href="/admin/modules">Modules</a>
+              </li>
+              <li class="link {% if currentUrl ==  "/admin/panel" %} active {% endif %}">
+                <a href="/admin/panel">Panel</a>
+              </li>
+              <li class="link {% if currentUrl ==  "/admin/qr" %} active {% endif %}">
+                <a href="/admin/qr">Nuevo Dispositivo</a>
+              </li>
             {%  elsif user.type == 'client' %}
-              <li class="link"><a href="/client/modules">Modules</a></li>
+              <li class="link {% if currentUrl ==  "/client/modules" %} active {% endif %}">
+                <a href="/client/modules">Modules</a>
+              </li>
             {% endif %}
-            <li class="link"><a href="/about">About</a></li>
+            <li class="link {% if currentUrl ==  "/about" %} active {% endif %}">
+              <a href="/about">About</a>
+            </li>
           </ul>
         </nav>
       </div>
