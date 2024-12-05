@@ -11,6 +11,7 @@ const registerPublicFolders = require('./core/publicFolders');
 const registerTemplateFolders = require('./core/templateFolders');
 const clientRoutes = require('./core/clientRoutes');
 const adminRoutes = require('./core/adminRoutes');
+const access = require('./core/accessChecker');
 const PORT = 3055;
 const lang = 'en';
 
@@ -29,6 +30,7 @@ serverApp.set('view engine', 'liquid'); // Establece LiquidJS como el motor de v
 // serverApp.set('views', [path.join(__dirname, 'views')]); // Carpeta de vistas
 serverApp.set('views', templatesFolders); // Carpeta de vistas
 
+serverApp.use(access); // Middleware para verificar el acceso
 // Middleware for pasar variables globales a todas las plantillas
 serverApp.use((req, res, next) => {
   res.locals.lang = lang;
