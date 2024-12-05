@@ -29,6 +29,13 @@ serverApp.set('view engine', 'liquid'); // Establece LiquidJS como el motor de v
 // serverApp.set('views', [path.join(__dirname, 'views')]); // Carpeta de vistas
 serverApp.set('views', templatesFolders); // Carpeta de vistas
 
+// Middleware for pasar variables globales a todas las plantillas
+serverApp.use((req, res, next) => {
+  res.locals.lang = lang;
+  res.locals.currentUrl = req.originalUrl ?? 'holamundo';
+  next();
+});
+
 // Registra carpetas de plantillas dinámicamente
 serverApp.use('/client', clientRoutes);
 serverApp.use('/admin', adminRoutes);
@@ -43,12 +50,6 @@ serverApp.use(cookieParser());
 // Middleware para parsear JSON y datos de formularios URL-encoded
 serverApp.use(express.json());
 serverApp.use(express.urlencoded({ extended: true }));
-
-// Middleware for pasar variables globales a todas las plantillas
-serverApp.use((req, res, next) => {
-  res.locals.lang = lang;
-  next();
-});
 
 // Ruta para mostrar los encabezados de la solicitud
 serverApp.get('/about', (req, res) => {

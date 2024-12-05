@@ -12,8 +12,6 @@ const IP = require('./utils/ip');
 const PORT = 3055;
 const url = `https://${IP}:${PORT}/`;
 console.log(`Server running at ${url}`);
-// const discoveredModules = m.discoverModules(path.join(__dirname, 'core/modules'));
-// console.log(discoveredModules);
 
 let mainWindow;
 let tray;
