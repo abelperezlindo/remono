@@ -4,10 +4,10 @@
 const eventEmitter = require('./core/events');
 
 require('./server');
-// const path = require('path');
+const path = require('path');
 // const m = require('./core/discoverModules');
 const db = require('./initialize');
-const { app, BrowserWindow, session, Menu} = require('electron');
+const { app, BrowserWindow, session, Tray, Menu} = require('electron');
 const IP = require('./utils/ip');
 const PORT = 3055;
 const url = `https://${IP}:${PORT}/`;
@@ -16,6 +16,7 @@ console.log(`Server running at ${url}`);
 // console.log(discoveredModules);
 
 let mainWindow;
+let tray;
 let splash;
 
 function createSplashScreen() {
@@ -45,6 +46,14 @@ function createMainWindow() {
     },
   });
 
+  mainWindow.on('close', (event) => {
+    if (!app.isQuiting) {
+      event.preventDefault();
+      mainWindow.hide();
+    }
+    return false;
+  });
+
   // win.loadFile('index.html');
   // Carga la aplicación desde el servidor Express
   mainWindow.loadURL(url + 'admin/home');
@@ -60,6 +69,34 @@ async function checkGlobal() {
 }
 app.whenReady().then(() => {
   createSplashScreen();
+  tray = new Tray(path.join(__dirname, 'icon.png'));
+  const contextMenu = Menu.buildFromTemplate([
+    {
+      label: 'Mostrar',
+      click: () => {
+        mainWindow.show();
+      }
+    },
+    {
+      label: 'Salir',
+      click: () => {
+        app.isQuiting = true;
+        app.quit();
+      }
+    }
+  ]);
+
+  tray.setToolTip('Mi Aplicación');
+  tray.setContextMenu(contextMenu);
+
+  tray.on('click', () => {
+    if (mainWindow) {
+      mainWindow.show();
+    } else {
+      createMainWindow();
+    }
+  });
+
   session.defaultSession.webRequest.onBeforeSendHeaders((details, callback) => {
     details.requestHeaders['User-Agent'] = 'Chrome';
     details.requestHeaders['is-server-side'] = 'true';
@@ -81,12 +118,15 @@ app.whenReady().then(() => {
 
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {
-    app.quit();
+    // app.quit();
   }
 });
 
 app.on('activate', () => {
   if (BrowserWindow.getAllWindows().length === 0) {
     createMainWindow();
+  }
+  else {
+    mainWindow.show();
   }
 });
