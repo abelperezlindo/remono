@@ -15,30 +15,34 @@
         {% block title-header %}My Website Header{% endblock %}
       </h1>
     </div>
-    <div class="menu-wrapper">
-      <nav>
-        <ul class="nav-links" >
-          {% if user.type == 'admin' %}
-            <li class="link"><a href="/admin/home">Home</a></li>
-            <li class="link"><a href="/admin/config">Config</a></li>
-            <li class="link"><a href="/admin/modules">Modules</a></li>
-            <li class="link"><a href="/admin/panel">Panel</a></li>
-            <li class="link"><a href="/admin/qr">Nuevo Dispositivo</a></li>
-          {%  elsif user.type == 'client' %}
-            <li class="link"><a href="/client/modules">Modules</a></li>
-          {% endif %}
-          <li class="link"><a href="/about">About</a></li>
-        </ul>
-      </nav>
-    </div>
   </header>
-
   <main>
-    {% block content %}{% endblock %}
+    <div class="sidebar-left">
+      <div class="menu-wrapper">
+        <nav>
+          <ul class="nav-links" >
+            {% if user.type == 'admin' %}
+              <li class="link "><a href="/admin/home">Home</a></li>
+              <li class="link"><a href="/admin/config">Config</a></li>
+              <li class="link"><a href="/admin/modules">Modules</a></li>
+              <li class="link"><a href="/admin/panel">Panel</a></li>
+              <li class="link"><a href="/admin/qr">Nuevo Dispositivo</a></li>
+            {%  elsif user.type == 'client' %}
+              <li class="link"><a href="/client/modules">Modules</a></li>
+            {% endif %}
+            <li class="link"><a href="/about">About</a></li>
+          </ul>
+        </nav>
+      </div>
+    </div>
+    <div class="content">
+      {% block content %}{% endblock %}
+    </div>
   </main>
 
   <footer>
     <p>&copy; 2024 reMono</p>
+    <h3> {{ currentUrl }} </h3>
   </footer>
 </body>
 </html>
