@@ -23,6 +23,7 @@ function createSplashScreen() {
   splash = new BrowserWindow({
     width: 250,
     height: 250,
+    icon: path.join(__dirname, 'icon.png'),
     frame: false,
     resizable: false,
     alwaysOnTop: true,
