@@ -2,9 +2,9 @@
 
 {% layout 'layout' %}
 
-{% block title %}Bienvenido {{ username }}!{% endblock %}
+{% block title %}Bienvenido {{ user.name }}!{% endblock %}
 
-{% block title-header %}¡Bienvenido {{ username }}!{% endblock %}
+{% block title-header %}¡Bienvenido {{ user.name }}!{% endblock %}
 
 {% block content %}
   <div>
