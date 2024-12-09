@@ -2,21 +2,6 @@
 const os = require('os');
 const jwt = require('jsonwebtoken');
 
-// Check jwt from cookie.
-/*   jwt.verify(initToken, global.secret, function(err, decoded) {
-    if (err) return res.status(401).json({ error: 'Token no válido', err });
-    // Validate the token
-    // Save the user
-    // Redirect to the panel
-    db.setDevice({name, initToken})
-      .then((result) => {
-        // Results is device id.
-      }).catch((err) => {
-        console.error(err);
-      });
-      eventEmitter.emit('notify', {body: 'Un nuevo dispositio se ah registrado!!'});
-    res.redirect('client/panel');
-  }); */
 // Middleware para verificar el acceso
 const checkJWT = (token) => {
   if (!token) {
@@ -65,7 +50,6 @@ function access(req, res, next) {
         type: 'anonymous',
         name: 'El Anon',
       }
-      res.status(401).send('Token inválido');
     }
 
   } catch (error) {
@@ -73,7 +57,6 @@ function access(req, res, next) {
       type: 'anonymous',
       name: 'El Anon',
     }
-    res.status(500).send('Error al verificar el token');
   }
 }
 

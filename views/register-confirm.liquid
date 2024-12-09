@@ -7,7 +7,7 @@
 
 {% block content %}
   <form action="/client/register/{{ jwt }}/confirm" method="POST">
-    <label for="device-name">Nombre del Dispositivo:</label>
+    <label for="name">Nombre del Dispositivo:</label>
     <input type="text" id="name" name="name" required>
     <button type="submit">Confirmar</button>
   </form>

@@ -10,37 +10,62 @@ const getTools = require('../configs');
 const hooks = require('./hooks');
 const eventEmitter = require('./events');
 
+const isValidRegisterToken = (token) => {
+  return new Promise((resolve, reject) => {
+    jwt.verify(token, global.secret, function(err, decoded) {
+      if (err) {
+        console.log('Error al verificar el token: ', err);
+        reject(false);
+      }
+      else {
+        resolve(decoded.exp ?? true);
+      }
+    });
+  });
+};
+
 router.get('/register/:jwt', function(req, res) {
 
-  jwt.verify(req.params.jwt, global.secret, function(err, decoded) {
-    if (err) return res.status(401).json({ error: 'Token no válido' });
-    // Validate the token
-    console.log(decoded);
+  if (isValidRegisterToken(req.params.jwt)) {
     res.render('register-confirm', { payload: decoded.exp, jwt: req.params.jwt});
-  });
+  }
+  else {
+    res.status(401).json({ error: 'Invalid registration token' });
+  }
 });
 
 router.post('/register/:jwt/confirm', function(req, res) {
   console.log(req);
   const name = req.body.name;
   const initToken = req.params.jwt;
-  if (req.headers['server-Token'] == 'abc') {
-    return res.status(401).json({ error: 'Solo desde un dispositivo cliente' });
+
+  if (res.locals.user == 'admin') {
+    return res.status(401).json({ error: 'Only from a client device' });
   }
-  jwt.verify(initToken, global.secret, function(err, decoded) {
-    if (err) return res.status(401).json({ error: 'Token no válido', err });
-    // Validate the token
-    // Save the user
-    // Redirect to the panel
+  else if (req.locals.user == 'client') {
+    return res.status(401).json({ error: 'This client is already registered' });
+  }
+  else if (initToken && isValidRegisterToken(initToken)) {
     db.setDevice({name, initToken})
-      .then((result) => {
-        // Results is device id.
-      }).catch((err) => {
-        console.error(err);
-      });
+    .then((result) => {
+      // Check if the user is logged in, see the cookie or the session. WIP
+      const acces_jwt = jwt.sign({
+        did: result,
+        opt: 'new client',
+        exp: Math.floor(Date.now() / 1000) + (60 * 20),
+      }, global.secret);
+
+      // Set a cookie
+      res.cookie('access_jwt', acces_jwt, { httpOnly: true, secure: true });
       eventEmitter.emit('notify', {body: 'Un nuevo dispositio se ah registrado!!'});
-    res.redirect('client/panel');
-  });
+
+      res.render('home');
+    })
+    .catch((err) => {
+      console.error(err);
+      res.status(500).json({ error: 'Error at register' });
+    });
+  }
 });
 
 router.get('/panel', function(req, res) {
