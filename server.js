@@ -29,7 +29,7 @@ serverApp.engine('liquid', engine.express()); // Configura el motor de plantilla
 serverApp.set('view engine', 'liquid'); // Establece LiquidJS como el motor de vistas
 // serverApp.set('views', [path.join(__dirname, 'views')]); // Carpeta de vistas
 serverApp.set('views', templatesFolders); // Carpeta de vistas
-
+serverApp.use(cookieParser());
 serverApp.use(access); // Middleware para verificar el acceso
 // Middleware for pasar variables globales a todas las plantillas
 serverApp.use((req, res, next) => {
@@ -45,9 +45,6 @@ serverApp.use('/admin', adminRoutes);
 serverApp.use(express.static(path.join(__dirname, 'public')));
 // Registra carpetas públicas dinámicamente
 registerPublicFolders(serverApp, path.join(__dirname, 'core', 'modules'));
-
-// Configura cookie-parser
-serverApp.use(cookieParser());
 
 // Middleware para parsear JSON y datos de formularios URL-encoded
 serverApp.use(express.json());

@@ -18,11 +18,26 @@ const jwt = require('jsonwebtoken');
     res.redirect('client/panel');
   }); */
 // Middleware para verificar el acceso
+const checkJWT = (jwt) => {
+  return new Promise((resolve, reject) => {
+    jwt.verify(jwt, global.secret, function(err, decoded) {
+      if (err) {
+        reject(err);
+      }
+      else {
+
+        resolve(decoded);
+      }
+    });
+  });
+}
 function access(req, res, next) {
 
   try {
     let isServer = (req.headers['is-server-side'] == 'true') ? true : false;
     let isValidClient = true; // Validar el token del cliente @todo
+    let access_jwt = req.cookies['access_jwt'] ?? false;
+    console.log('access_jwt: ', access_jwt);
 
     if (isServer) {
       res.locals.user = {
