@@ -7,7 +7,7 @@ require('./server');
 const path = require('path');
 // const m = require('./core/discoverModules');
 const db = require('./initialize');
-const { app, BrowserWindow, session, Tray, Menu} = require('electron');
+const { app, BrowserWindow, session, Tray, Menu, shell} = require('electron');
 const IP = require('./utils/ip');
 const PORT = 3055;
 const url = `https://${IP}:${PORT}/`;
@@ -58,6 +58,11 @@ function createMainWindow() {
   mainWindow.loadURL(url + 'admin/home');
   // Abre las herramientas de desarrollo
   mainWindow.webContents.openDevTools();
+
+  mainWindow.webContents.setWindowOpenHandler((details) => {
+    shell.openExternal(details.url); // Open URL in user's browser.
+    return { action: "deny" }; // Prevent the app from opening the URL.
+  })
 }
 
 Menu.setApplicationMenu(null);
