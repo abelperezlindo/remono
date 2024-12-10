@@ -38,6 +38,9 @@
                 <a href="/admin/qr">Nuevo Dispositivo</a>
               </li>
             {%  elsif user.type == 'client' %}
+              <li class="link {% if currentUrl ==  "/client/home" %} active {% endif %}">
+                <a href="/admin/home">Home</a>
+              </li>
               <li class="link {% if currentUrl ==  "/client/modules" %} active {% endif %}">
                 <a href="/client/modules">Modules</a>
               </li>

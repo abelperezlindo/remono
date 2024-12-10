@@ -10,6 +10,11 @@ const getTools = require('../configs');
 const hooks = require('./hooks');
 const eventEmitter = require('./events');
 
+// Ruta de ejemplo
+router.get('/home', (req, res) => {
+  res.render('index', { });
+});
+
 const isValidRegisterToken = (token) => {
   return new Promise((resolve, reject) => {
     jwt.verify(token, global.secret, function(err, decoded) {
@@ -59,26 +64,13 @@ router.post('/register/:jwt/confirm', function(req, res) {
       res.cookie('access_jwt', acces_jwt, { httpOnly: true, secure: true });
       eventEmitter.emit('notify', {body: 'Un nuevo dispositio se ah registrado!!'});
 
-      res.render('home');
+      res.redirect('/client/home');
     })
     .catch((err) => {
       console.error(err);
       res.status(500).json({ error: 'Error at register' });
     });
   }
-});
-
-router.get('/panel', function(req, res) {
-  const tools = getTools();
-  // Check if the user is logged in, see the cookie or the session. WIP
-  var acces_jwt = jwt.sign({
-    opt: 'new client',
-    exp: Math.floor(Date.now() / 1000) + (60 * 20),
-  }, global.secret);
-
-  // Set a cookie
-  res.cookie('access_jwt', acces_jwt, { httpOnly: true, secure: true });
-  res.render('panel', { tools });
 });
 
 router.get('/modules', (req, res) => {
