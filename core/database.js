@@ -1,4 +1,3 @@
-// database.js
 const sqlite3 = require('sqlite3').verbose();
 var generator = require('generate-password');
 
@@ -11,7 +10,7 @@ class Database {
           console.error(err.message);
         }
         console.log('Conectado a la base de datos');
-      }); // Usa una base de datos en memoria para desarrollo
+      });
       Database.instance = this;
     } else {
       console.log('Usando una instancia de la base de datos');
@@ -19,7 +18,7 @@ class Database {
 
     return Database.instance;
   }
-
+  // DB Kickstart.
   bootstrap() {
     return new Promise((resolve, reject) => {
       this.db.serialize(() => {
@@ -45,7 +44,7 @@ class Database {
       });
     });
   }
-
+  // Get a variable form the database. (key => value)
   getVar(key) {
     return new Promise((resolve, reject) => {
       this.db.get('SELECT value FROM var WHERE key = ?;', [key], (err, row) => {
@@ -61,7 +60,7 @@ class Database {
       });
     });
   }
-
+  // Set a variable in the database, if the variable exists, update it. (key => value)
   setVar(key, value) {
     return new Promise((resolve, reject) => {
       this.getVar(key).then((current) => {
@@ -81,7 +80,7 @@ class Database {
       });
     });
   }
-
+  // Set a device in the database.
   setDevice(device) {
     return new Promise((resolve, reject) => {
       const stmt = this.db.prepare("INSERT INTO device (name, token) VALUES (?, ?)");
@@ -101,7 +100,7 @@ class Database {
   }
 }
 
-// Congelar la clase para prevenir modificaciones
+// Freeze the instance.
 const instance = new Database();
 Object.freeze(instance);
 

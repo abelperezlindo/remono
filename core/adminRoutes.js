@@ -1,4 +1,3 @@
-// adminRoutes.js
 const express = require('express');
 const router = express.Router();
 const QRCode = require('qrcode');
@@ -6,23 +5,21 @@ const os = require('os');
 const jwt = require('jsonwebtoken');
 const IP = require('../utils/ip');
 const IP_URL = `https://${IP}:3055/`;
-const PORT = 3055;
-const getTools = require('../configs');
 const hooks = require('./hooks');
 const path = require('path');
 const m = require('./modules/discoverModules');
 const discoveredModules = m.discoverModules(path.join(__dirname, '/modules'));
 const eventEmitter = require('./events');
 
-// Ruta de ejemplo
+// Route for admin homepage.
 router.get('/home', (req, res) => {
   res.render('index', { });
 });
 
-// Register
+// Route for get registration qr or link.
 router.get('/qr', async (req, res) => {
 
-  // sign up jwt exp in 20 minutes
+  // Sign up jwt exp in 20 minutes
   var token = jwt.sign({
     opt: 'new client',
     exp: Math.floor(Date.now() / 1000) + (60 * 20),
@@ -38,18 +35,7 @@ router.get('/qr', async (req, res) => {
   }
 });
 
-// Ruta para mostrar los encabezados de la solicitud
-router.get('/config', (req, res) => {
-  const tools = getTools();
-  // Check if the user is logged in, see the cookie or the session. WIP
-  var acces_jwt = jwt.sign({
-    opt: 'new client',
-    exp: Math.floor(Date.now() / 1000) + (60 * 20),
-  }, global.secret);
-
-  res.render('config', { tools });
-});
-
+// Route for get modules list.
 router.get('/modules', (req, res) => {
   eventEmitter.emit('greet', 'Mundo');
   eventEmitter.emit('notify', {body: 'Notificación de lanzamiento'});
@@ -58,7 +44,7 @@ router.get('/modules', (req, res) => {
   res.render('modules', { keys,  modules: discoveredModules });
 });
 
-// Ruta para configurar módulos GET
+// Route for congifure a module (GET)
 router.get('/module/:module', (req, res, next) => {
   const moduleName = req.params.module;
   const middleware = hooks.getAdminMiddleware(moduleName);
@@ -70,7 +56,7 @@ router.get('/module/:module', (req, res, next) => {
   }
 });
 
-// Ruta para configurar módulos POST
+// Route for congifure a module (POST)
 router.post('/module/:module', (req, res, next) => {
   const moduleName = req.params.module;
   const middleware = hooks.getAdminMiddleware(moduleName);

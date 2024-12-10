@@ -1,4 +1,3 @@
-// initialize.js
 const sqlite3 = require('sqlite3').verbose();
 
 const db = require('./core/database');
@@ -9,7 +8,7 @@ db.bootstrap().then((msg) => {
   console.error('Error initializing database');
   console.error(err);
 });
-
+// Set globals.
 (async () => {
   global.secret = await db.getVar('SECRET');
 })();

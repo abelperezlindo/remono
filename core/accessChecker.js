@@ -1,8 +1,7 @@
-// accessChecker.js
 const os = require('os');
 const jwt = require('jsonwebtoken');
 
-// Middleware para verificar el acceso
+// Funtion for check if an access JWT token is valid.
 const checkJWT = (token) => {
   if (!token) {
     return false;
@@ -24,6 +23,7 @@ const checkJWT = (token) => {
   }
 }
 
+// Middleware for access control.
 function access(req, res, next) {
 
   try {
@@ -43,7 +43,8 @@ function access(req, res, next) {
         name: 'El Cliente',
         token: 'abc'
       }
-      next(); // Token válido, continuar con la solicitud
+      // The token is valid, call next middleware.
+      next();
     }
     else {
       res.locals.user = {

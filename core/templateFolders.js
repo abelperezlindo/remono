@@ -1,7 +1,6 @@
-// templateFolders.js
 const path = require('path');
 const fs = require('fs');
-
+// Register template folders for modules.
 const registerTemplateFolders = (modulesPath) => {
   const templatePaths = [];
 

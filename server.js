@@ -1,5 +1,4 @@
-// server.js
-const { Liquid } = require('liquidjs'); // Requiere LiquidJS
+const { Liquid } = require('liquidjs');
 const express = require('express');
 const path = require('path');
 const https = require('https');
@@ -15,65 +14,67 @@ const access = require('./core/accessChecker');
 const PORT = 3055;
 const lang = 'en';
 
-// Genera un certificado SSL autofirmado
+// Generates a self-signed SSL certificate
 const pems = selfsigned.generate(null, { days: 365 });
 
-// Configura LiquidJS como el motor de plantillas
+// Config LiquidJS as the template engine
 let engine = new Liquid({
-  root: path.join(__dirname, 'views'), // Carpeta de vistas
-  extname: '.liquid' // Extensión de archivos de plantilla
+  root: path.join(__dirname, 'views'),
+  extname: '.liquid'
 });
+// Get list of template folders of Modules.
 const templatesFolders = registerTemplateFolders(path.join(__dirname, 'core', 'modules'));
 
-serverApp.engine('liquid', engine.express()); // Configura el motor de plantillas
-serverApp.set('view engine', 'liquid'); // Establece LiquidJS como el motor de vistas
-// serverApp.set('views', [path.join(__dirname, 'views')]); // Carpeta de vistas
-serverApp.set('views', templatesFolders); // Carpeta de vistas
+serverApp.engine('liquid', engine.express());
+serverApp.set('view engine', 'liquid');
+// Register template folders of Modules.
+serverApp.set('views', templatesFolders);
+// Middleware for cookies.
 serverApp.use(cookieParser());
-serverApp.use(access); // Middleware para verificar el acceso
-// Middleware for pasar variables globales a todas las plantillas
+// Middleware for access control.
+serverApp.use(access);
+// Middleware for setting context variables to be used in templates.
 serverApp.use((req, res, next) => {
   res.locals.lang = lang;
-  res.locals.currentUrl = req.originalUrl ?? 'holamundo';
+  res.locals.currentUrl = req.originalUrl;
   next();
 });
-
-// Registra carpetas de plantillas dinámicamente
+// Separates routes for clients and administrator.
 serverApp.use('/client', clientRoutes);
 serverApp.use('/admin', adminRoutes);
-// Configura Express para servir archivos estáticos
+
+// Config public folder.
 serverApp.use(express.static(path.join(__dirname, 'public')));
-// Registra carpetas públicas dinámicamente
+// Register public folders of Modules.
 registerPublicFolders(serverApp, path.join(__dirname, 'core', 'modules'));
 
-// Middleware para parsear JSON y datos de formularios URL-encoded
+// Middleware for parsing JSON and URL-encoded data
 serverApp.use(express.json());
 serverApp.use(express.urlencoded({ extended: true }));
 
-// Ruta para mostrar los encabezados de la solicitud
+// Common route 'about'.
 serverApp.get('/about', (req, res) => {
   res.render('about');
 });
 
-// Configura HTTPS
+// Config HTTPS.
 const options = {
   key: pems.private,
   cert: pems.cert
 };
 
-// Inicia el servidor HTTPS
+//  Create the HTTPS server
 const server = https.createServer(options, serverApp).listen(PORT, () => {
-  console.log(`Servidor web escuchando en https://localhost:${PORT}`);
+  console.log(`Web server running at https://localhost:${PORT}`);
 });
 
-// Configura el servidor WebSocket
+// Config WebSocket server.
 const wss = new WebSocket.Server({ server });
 wss.on('connection', (ws) => {
   console.log('New client connected');
 
   ws.on('message', (message) => {
     console.log(`Received message: ${message}`);
-    // Envía una respuesta al cliente
     ws.send('Message received');
   });
 

@@ -1,11 +1,8 @@
-// main.js
 'use strict';
 
 const eventEmitter = require('./core/events');
-
 require('./server');
 const path = require('path');
-// const m = require('./core/discoverModules');
 const db = require('./initialize');
 const { app, BrowserWindow, session, Tray, Menu, shell} = require('electron');
 const IP = require('./utils/ip');
@@ -53,19 +50,19 @@ function createMainWindow() {
     return false;
   });
 
-  // win.loadFile('index.html');
-  // Carga la aplicación desde el servidor Express
+  // Load home page served by Express.
   mainWindow.loadURL(url + 'admin/home');
-  // Abre las herramientas de desarrollo
+  // Open dev tools.
   mainWindow.webContents.openDevTools();
-
+  // Open external links in user's browser.
   mainWindow.webContents.setWindowOpenHandler((details) => {
-    shell.openExternal(details.url); // Open URL in user's browser.
-    return { action: "deny" }; // Prevent the app from opening the URL.
+    shell.openExternal(details.url);
+    return { action: "deny" };
   })
 }
-
+// Remove default app menu.
 Menu.setApplicationMenu(null);
+// Check for global secret, (TODO: Is nedded?)
 async function checkGlobal() {
   if (!global.secret) {
     setTimeout(checkGlobal, 1000);
@@ -73,6 +70,7 @@ async function checkGlobal() {
 }
 app.whenReady().then(() => {
   createSplashScreen();
+  // Build tray menu.
   tray = new Tray(path.join(__dirname, 'icon.png'));
   const contextMenu = Menu.buildFromTemplate([
     {
@@ -90,7 +88,7 @@ app.whenReady().then(() => {
     }
   ]);
 
-  tray.setToolTip('Mi Aplicación');
+  tray.setToolTip('ReMono');
   tray.setContextMenu(contextMenu);
 
   tray.on('click', () => {
@@ -106,13 +104,13 @@ app.whenReady().then(() => {
     details.requestHeaders['is-server-side'] = 'true';
     callback({ cancel: false, requestHeaders: details.requestHeaders });
   });
-
+  // Ignore certificate errors.
   session.defaultSession.setCertificateVerifyProc((request, callback) => {
-    callback(0); // Ignora todos los errores de certificados
+    callback(0);
   });
 
   checkGlobal().then(() => {
-    // En el mejor de los casos mostrar solo un segundo el splash.
+    // Close slpanish screen if globals are setted.
     setTimeout(() => {
       createMainWindow();
       splash.close();
@@ -123,6 +121,7 @@ app.whenReady().then(() => {
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {
     // app.quit();
+    // Hide window instead of quit.
   }
 });
 

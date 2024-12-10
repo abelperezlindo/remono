@@ -1,4 +1,4 @@
-// hooks.js
+// Hooks definitions.
 const hooks = {
   adminMiddlewares: {},
   clientMiddlewares: {},

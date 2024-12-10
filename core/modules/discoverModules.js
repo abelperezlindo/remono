@@ -1,7 +1,6 @@
-// discoverModules.js
 const fs = require('fs');
 const path = require('path');
-
+// Descover modules in a directory, and return a list of modules.
 const discoverModules = function (directory) {
   if (directory) {
     const modules = {};

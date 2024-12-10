@@ -1,4 +1,3 @@
-// clientRoutes.js
 const express = require('express');
 const router = express.Router();
 const db = require('./database');
@@ -6,15 +5,15 @@ const jwt = require('jsonwebtoken');
 const IP = require('../utils/ip');
 const IP_URL = `https://${IP}:3055/`;
 const PORT = 3055;
-const getTools = require('../configs');
 const hooks = require('./hooks');
 const eventEmitter = require('./events');
 
-// Ruta de ejemplo
+// Route for client homepage.
 router.get('/home', (req, res) => {
   res.render('index', { });
 });
 
+// Check if registration token is valid.
 const isValidRegisterToken = (token) => {
   return new Promise((resolve, reject) => {
     jwt.verify(token, global.secret, function(err, decoded) {
@@ -29,6 +28,7 @@ const isValidRegisterToken = (token) => {
   });
 };
 
+// Route for get confirm registration form.
 router.get('/register/:jwt', function(req, res) {
 
   if (isValidRegisterToken(req.params.jwt)) {
@@ -39,6 +39,7 @@ router.get('/register/:jwt', function(req, res) {
   }
 });
 
+// Route for set device name and confirming the registration.
 router.post('/register/:jwt/confirm', function(req, res) {
   console.log(req);
   const name = req.body.name;
@@ -53,7 +54,6 @@ router.post('/register/:jwt/confirm', function(req, res) {
   else if (initToken && isValidRegisterToken(initToken)) {
     db.setDevice({name, initToken})
     .then((result) => {
-      // Check if the user is logged in, see the cookie or the session. WIP
       const acces_jwt = jwt.sign({
         did: result,
         opt: 'new client',
@@ -73,13 +73,14 @@ router.post('/register/:jwt/confirm', function(req, res) {
   }
 });
 
+// Route to show the list of modules.
 router.get('/modules', (req, res) => {
   let keys = Object.keys(discoveredModules);
   console.log(keys);
   res.render('modules', { keys,  modules: discoveredModules });
 });
 
-// Ruta para configurar módulos GET
+// Config route for a module (GET)
 router.get('/module/:module', (req, res, next) => {
   const moduleName = req.params.module;
   const middleware = hooks.getClientMiddleware(moduleName);
@@ -91,7 +92,7 @@ router.get('/module/:module', (req, res, next) => {
   }
 });
 
-// Ruta para configurar módulos POST
+// Config route for a module (POST)
 router.post('/module/:module', (req, res, next) => {
   const moduleName = req.params.module;
   const middleware = hooks.getClientMiddleware(moduleName);

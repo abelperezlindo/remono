@@ -1,7 +1,7 @@
-// publicFolders.js
 const path = require('path');
 const express = require('express');
 
+// Register public folders for modules.
 const registerPublicFolders = (app, modulesPath) => {
   const fs = require('fs');
 
