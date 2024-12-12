@@ -7,7 +7,7 @@ const IP = require('../utils/ip');
 const IP_URL = `https://${IP}:3055/`;
 const hooks = require('./hooks');
 const path = require('path');
-const m = require('./modules/discoverModules');
+const m = require('./discoverModules');
 const discoveredModules = m.discoverModules(path.join(__dirname, '/modules'));
 const eventEmitter = require('./events');
 
