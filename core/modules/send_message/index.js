@@ -1,4 +1,5 @@
 const hooks = require('../../hooks'); // Importa los hooks
+const eventEmitter = require('../../events');
 
 // Define el middleware para el módulo
 const moduleAdminMiddleware = (req, res, next) => {
@@ -11,12 +12,17 @@ const moduleClientMiddleware = (req, res, next) => {
   // TODO
   // If the request is a POST request, handle the form data.
   if (req.method == "POST") {
-    // do form handling
-    res.send(req.body.message);
-  } else {
-    res.render('sendMessage', { user: res.locals.user, moduleName: req.params.module });
-  }
+    // do form handling}
+    if (req.body.message) {
 
+      eventEmitter.emit('notify', {body: 'Notificación de lanzamiento'});
+      res.send('Message sent');
+    } else {
+      res.render('sendMessage', { user: res.locals.user, moduleName: req.params.module, sent: req.body.message ?? false });
+    }
+  } else {
+    res.render('sendMessage', { user: res.locals.user, moduleName: req.params.module, sent: req.body.message ?? false });
+  }
 };
 
 // Registra el middleware en los hooks

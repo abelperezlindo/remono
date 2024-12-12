@@ -6,6 +6,9 @@
 {% block title-header %}Send a message{% endblock %}
 
 {% block content %}
+  {%  if sent  %}
+    <p>Message sent!</p>
+  {% endif %}
   <p> Send a message to the server and wait for the pong response. </p>
   <form method="post">
     <textarea name="message" placeholder="Message"></textarea>
